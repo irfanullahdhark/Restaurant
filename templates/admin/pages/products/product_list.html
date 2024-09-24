@@ -1,0 +1,480 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block links_block %}
+ 	<link type="image/x-icon" href="images/fav-icon.png" rel="icon">
+	<link rel="stylesheet" type="text/css" href="{% static 'admin/products/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'admin/products/css/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'admin/products/css/responsive.css' %}">
+
+{% endblock %}
+
+{% block style_block %}
+  .del{
+    color:red;
+	cursor:pointer;
+  }
+  .del:active{
+    color:#000;
+  }
+{% endblock %}
+
+
+{% block body_block %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Products List</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Product List</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+	<section class="menu-list pt-100 content">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="menu-tabbing">
+						<ul id="tabs" class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="tab-link current" data-tab="tab-all-foods"><a href="#tab-all-foods" role="tab" data-toggle="tab" class="">all</a></li>
+							<li role="presentation" class="tab-link" data-tab="tab-pizza"><a href="#tab-pizza"  role="tab" data-toggle="tab">pizzas</a></li>
+							<li role="presentation" class="tab-link" data-tab="tab-beverage"><a href="#tab-beverage"  role="tab" data-toggle="tab">Beverage</a></li>
+							<li role="presentation" class="tab-link" data-tab="tab-special-juice"><a href="#tab-special-juice"  role="tab" data-toggle="tab">Special Juice</a></li>
+							<li role="presentation" class="tab-link" data-tab="tab-sweets"><a href="#tab-sweets"  role="tab" data-toggle="tab">Sweets</a></li>
+							<li role="presentation" class="tab-link" data-tab="tab-rice-biryani"><a href="#tab-rice-biryani"  role="tab" data-toggle="tab">Rice & Biryani</a></li>
+							<li role="presentation" class="tab-link" data-tab="tab-fast-food"><a href="#tab-fast-food"  role="tab" data-toggle="tab">Fast Food</a></li>
+							<li role="presentation" class="tab-link" data-tab="tab-bar-be-coe"><a href="#tab-bar-be-coe"  role="tab" data-toggle="tab">Bar-Be-Coe</a></li>
+							<li role="presentation" class="tab-link" data-tab="tab-salad"><a href="#tab-salad"  role="tab" data-toggle="tab">Salad</a></li>
+							<li role="presentation" class="tab-link" data-tab="tab-special-top"><a href="#tab-special-top"  role="tab" data-toggle="tab">Special Top 11</a></li>
+							<li role="presentation" class="tab-link" data-tab="tab-afghani-special"><a href="#tab-afghani-special"  role="tab" data-toggle="tab">Afghani Special</a></li>
+							<li role="presentation" class="tab-link" data-tab="tab-pakistani"><a href="#tab-pakistani"  role="tab" data-toggle="tab">Pakistani</a></li>
+							<li role="presentation" class="tab-link" data-tab="tab-chinese"><a href="#tab-chinese"  role="tab" data-toggle="tab">Chinese</a></li>
+							<li role="presentation" class="tab-link" data-tab="tab-soup"><a href="#tab-soup"  role="tab" data-toggle="tab">Soup</a></li>
+							<li role="presentation" class="tab-link" data-tab="tab-fish"><a href="#tab-fish"  role="tab" data-toggle="tab">Fish</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="tab-content">
+<!--				content stored pashto.html desktop -->
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-all-foods">
+				{% if all_foods %}
+					{% for food in all_foods %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2">
+							<div class="list-img-2">
+								<a href="{% url 'product_details' food.pro_id.id  %}"><img src="{{food.photo1.url}}" alt="food-image"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' food.pro_id.id %}" class="iteam-name">{{food.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{food.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{food.pro_id.id}}" data-cat="" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{food.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-pizza">
+				{% if pizzas %}
+					{% for pizza in pizzas %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2">
+							<div class="list-img-2">
+								<a href="{% url 'product_details' pizza.pro_id.id  %}"><img src="{{pizza.photo1.url}}" alt="pizza"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' pizza.pro_id.id %}" class="iteam-name">{{pizza.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{pizza.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{pizza.pro_id.id}}" data-cat="{{pizza.pro_id.category}}" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{pizza.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-beverage">
+				{% if beverages %}
+					{% for beverage in beverages %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2">
+							<div class="list-img-2">
+								<a href="{% url 'product_details' beverage.pro_id.id  %}"><img src="{{beverage.photo1.url}}" alt="beverage"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' beverage.pro_id.id %}" class="iteam-name">{{beverage.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{beverage.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{beverage.pro_id.id}}" data-cat="{{beverage.pro_id.category}}" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{beverage.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-special-juice">
+				{% if special_juices %}
+					{% for juice in special_juices %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2">
+							<div class="list-img-2">
+								<a href="{% url 'product_details' juice.pro_id.id  %}"><img src="{{juice.photo1.url}}" alt="juice"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' juice.pro_id.id %}" class="iteam-name">{{juice.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{juice.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{juice.pro_id.id}}" data-cat="{{juice.pro_id.category}}" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{juice.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-sweets">
+				{% if sweets %}
+					{% for sweet in sweets %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2">
+							<div class="list-img-2">
+								<a href="{% url 'product_details' sweet.pro_id.id  %}"><img src="{{sweet.photo1.url}}" alt="sweet"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' sweet.pro_id.id %}" class="iteam-name">{{sweet.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{sweet.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{sweet.pro_id.id}}" data-cat="{{sweet.pro_id.category}}" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{sweet.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-rice-biryani">
+				{% if rice_biryanis %}
+					{% for biryani in rice_biryanis %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2">
+							<div class="list-img-2">
+								<a href="{% url 'product_details' biryani.pro_id.id  %}"><img src="{{biryani.photo1.url}}" alt="rice-biryani"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' biryani.pro_id.id %}" class="iteam-name">{{biryani.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{biryani.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{biryani.pro_id.id}}" data-cat="{{biryani.pro_id.category}}" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{biryani.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-fast-food">
+				{% if fast_foods %}
+					{% for food in fast_foods %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2">
+							<div class="list-img-2">
+								<a href="{% url 'product_details' food.pro_id.id  %}"><img src="{{food.photo1.url}}" alt="food"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' food.pro_id.id %}" class="iteam-name">{{food.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{food.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{food.pro_id.id}}" data-cat="{{food.pro_id.category}}" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{food.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-bar-be-coe">
+				{% if bar_be_coes %}
+					{% for bar_be_coe in bar_be_coes %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2">
+							<div class="list-img-2">
+								<a href="{% url 'product_details' bar_be_coe.pro_id.id  %}"><img src="{{bar_be_coe.photo1.url}}" alt="bar_be_coe"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' bar_be_coe.pro_id.id %}" class="iteam-name">{{bar_be_coe.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{bar_be_coe.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{bar_be_coe.pro_id.id}}" data-cat="{{bar_be_coe.pro_id.category}}" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{bar_be_coe.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-salad">
+				{% if salads %}
+					{% for salad in salads %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2">
+							<div class="list-img-2">
+								<a href="{% url 'product_details' salad.pro_id.id  %}"><img src="{{salad.photo1.url}}" alt="salad"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' salad.pro_id.id %}" class="iteam-name">{{salad.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{salad.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{salad.pro_id.id}}" data-cat="{{salad.pro_id.category}}" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{salad.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-special-top">
+				{% if special_tops %}
+					{% for special in special_tops %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2">
+							<div class="list-img-2">
+								<a href="{% url 'product_details' special.pro_id.id  %}"><img src="{{special.photo1.url}}" alt="special"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' special.pro_id.id %}" class="iteam-name">{{special.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{special.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{special.pro_id.id}}" data-cat="{{special.pro_id.category}}" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{special.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-afghani-special">
+				{% if afghani_specials %}
+					{% for afghani in afghani_specials %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2">
+							<div class="list-img-2">
+								<a href="{% url 'product_details' afghani.pro_id.id  %}"><img src="{{afghani.pro_id.photo1.url}}" alt="afghani-special"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' afghani.pro_id.id %}" class="iteam-name">{{afghani.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{afghani.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{afghani.pro_id.id}}" data-cat="{{afghani.pro_id.category}}" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{afghani.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-pakistani">
+				{% if pakistanis %}
+					{% for pakistani in pakistanis %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2">
+							<div class="list-img-2">
+								<a href="{% url 'product_details' pakistani.pro_id.id  %}"><img src="{{pakistani.photo1.url}}" alt="pakistani"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' pakistani.pro_id.id %}" class="iteam-name">{{pakistani.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{pakistani.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{pakistani.pro_id.id}}" data-cat="{{pakistani.pro_id.category}}" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{pakistani.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-chinese">
+				{% if chineses %}
+					{% for chinese in chineses %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2" >
+							<div class="list-img-2">
+								<a href="{% url 'product_details' chinese.pro_id.id  %}"><img src="{{chinese.photo1.url}}" alt="chinese"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' chinese.pro_id.id %}" class="iteam-name">{{chinese.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{chinese.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{chinese.pro_id.id}}" data-cat="{{chinese.pro_id.category}}" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{chinese.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-soup">
+				{% if soups %}
+					{% for soup in soups %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2" >
+							<div class="list-img-2">
+								<a href="{% url 'product_details' soup.pro_id.id  %}"><img src="{{soup.photo1.url}}" alt="soup"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' soup.pro_id.id %}" class="iteam-name">{{soup.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{soup.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{soup.pro_id.id}}" data-cat="{{soup.pro_id.category}}" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{soup.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-fish">
+				{% if fishes %}
+					{% for fish in fishes %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="menu-list-box-2">
+							<div class="list-img-2">
+								<a href="{% url 'product_details' fish.pro_id.id  %}"><img src="{{fish.photo1.url}}" alt="fish"></a>
+							</div>
+							<div class="menu-detail-2">
+								<div class="iteam-name-list">
+									<a href="{% url 'product_details' fish.pro_id.id %}" class="iteam-name">{{fish.pro_id.name}}</a>
+									<span style="color:#fd9d3e;">{{fish.pro_id.price}} Afs</span>
+									<span class="iteam-srice" >
+										<i title="Delete Order" data-id="{{fish.pro_id.id}}" data-cat="{{fish.pro_id.category}}" class="fa fa-trash cart-remove-item del"></i>
+									</span>
+								</div>
+								<p class="iteam-desc">{{fish.pro_id.info}}</p>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock %}
+
+
+
+{% block scripts_block %}
+<script>
+  $(document).ready(function(){
+    $(document).on('click','.del', function(){
+      output = ''
+      food_id = $(this).attr('data-id');
+      food_cat = $(this).attr('data-cat');
+	  parent = 	$(this).parent().parent().parent().parent().parent().parent();
+
+      mydata = {id:food_id, category:food_cat}
+      $.ajax({
+        url : "{% url 'products_list' %}",
+        method: "POST",
+        data: mydata,
+        success: function(data){
+			output = "";
+			for(i=0;i<data.foods.length;i++){
+				var prod_id = data.foods[i].pro_id.id
+				var prod_detail_url = "/products/product_details/" + prod_id + "/";
+
+				output += "<div class='col-xl-6 col-lg-6 col-md-6'><div class='menu-list-box-2'><div class='list-img-2'><a href='"+ prod_detail_url +"'><img src='" + data.foods[i].photo1 +
+				"' alt='afghani-special'></a></div><div class='menu-detail-2'><div class='iteam-name-list'><a href='" + prod_detail_url + "' class='iteam-name'>" + data.foods[i].pro_id.name + "</a><span style='color:#fd9d3e;'>" +
+				data.foods[i].pro_id.price + " Afs</span><span class='iteam-srice'><i title='Delete Order' data-id='" + data.foods[i].pro_id.id +
+				"' data-cat='" + data.foods[i].pro_id.category + "' class='fa fa-trash cart-remove-item del'></i></span></div><p class='iteam-desc'>" +
+				data.foods[i].pro_id.info + "</p></div></div></div>";
+			}
+			parent.html(output);
+
+
+      }})
+
+    })
+  })
+</script>
+{% endblock %}
+
+

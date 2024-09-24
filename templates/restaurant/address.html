@@ -1,0 +1,123 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block body_block %}
+	<section class="page-banner" style="background: #121619 url({% static 'restaurant/images/blog-1.jpg' %}) no-repeat center / cover;">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="page-title">
+						<h1 class="page-headding">Address</h1>
+						<ul>
+							<li><a href="index.html" class="page-name">Home</a></li>
+							<li><a href="cart.html" class="page-name">cart</a></li>
+							<li>Address</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="checkout-part ptb">
+		<div class="container">
+			<form class="main-form" method="POST" id="addressForm">
+				{% csrf_token %}
+				<div class="row">
+					<div class="col-12 col-lg-8">
+						<div class="mb-md-30">
+							<div class="mb-60">
+								<div class="row">
+									<div class="col-12">
+										<div class="heading-part mb-30 mb-sm-20">
+								            <h3>Address Details</h3>
+								        </div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12">
+										<div class="form-group">
+											<label for="full-name">Full Name*</label>
+					                        <input id="full-name" type="text" required="" value="{{request.user}}" readonly>
+					                    </div>
+									</div>
+									{% for field in form %}
+									<div class="col-12">
+										<div class="form-group">
+											<label for="{{field.id_for_label}}">{{field.label}}</label>
+					                        {{field}}
+											{% if field.errors %}
+												{% for error in field.errors %}
+													<span class="text-danger">{{error}}</span>
+												{% endfor %}
+											{% endif %}
+					                    </div>
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+							
+						</div>
+					</div>
+					<div class="col-12 col-lg-4">
+						<div class="heading-part mb-30 mb-sm-20">
+				            <h3>Your order</h3>
+				        </div>
+				        <div class="checkout-products sidebar-product mb-60">
+				            <ul>
+								{% for product in cart_products %}
+							    <li>
+							        <div class="pro-media"> <a href="{% url 'pro_details' product.product.id  %}"><img alt="pizzon" src="{{product.product.product_photos.photo1.url}}"></a> </div>
+							        <div class="pro-detail-info"> <a href="{% url 'pro_details' product.product.id  %}" class="product-title">{{product.product.name}}</a>
+								        <div class="price-box"> 
+								            <span class="price">{{product.product.price}}Afs</span>
+								            <del class="price old-price">{{product.product.old_price}}</del>
+								        </div>
+								        <div class="checkout-qty">
+								            <div>
+						                        <label>Qty: </label>
+						                        <span class="info-deta">{{product.quantity}}</span>
+						                    </div>
+								        </div>
+							        </div>
+							    </li>
+								{% endfor %}
+						    </ul>
+				        </div>
+				        <div class="complete-order-detail commun-table gray-bg mb-30">
+					        <div class="table-responsive">
+					            <table class="table m-0">
+					                <tbody>
+					                    <tr>
+					                        <td><b>Order Places :</b></td>
+					                        <td>{{order_date}}</td>
+					                    </tr>
+					                    <tr>
+					                        <td><b>Total :</b></td>
+					                        <td><div class="price-box"> <span class="price">{{total_price}} Afs</span> </div></td>
+					                    </tr>
+
+					                </tbody>
+					            </table>
+					        </div>
+					    </div>
+					    <button class="btn full btn-color" id="submitBtn">Place order</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</section>
+
+{% endblock %}
+
+
+{% block script_block %}
+<script>
+	$(document).ready(function(){
+		$('#submitBtn').click(function(){
+			$('#addressForm').submit();
+		})
+	})
+</script>
+{% endblock %}
+

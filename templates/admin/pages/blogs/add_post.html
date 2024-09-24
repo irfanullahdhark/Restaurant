@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body_block %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Add Post</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Add Post</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- /.row -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Add Post</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                  <div class="container">
+                      <div class="row">
+                          <div class="col-sm-8 offset-2">
+                            <form method="POST" novalidate enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                              {% for field in post_form %}
+                                <label for="{{field.id_for_label}}">{{field.label}}</label>
+                                {{field}}
+                                {{field.errors}}
+                              {% endfor %}
+
+                              <div class="form-group my-4">
+                                <input type="submit" class="btn btn-success" value="save">
+                                <a href="{% url 'add_post' %}" class="btn btn-danger" >Back</a>
+                              </div>
+                           </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  
+  <!-- /.content-wrapper -->
+</div>
+<!-- ./wrapper -->
+
+{% endblock %}
+
+
+{% block scripts_block %}
+<script src="{% static 'tinymce/tinymce.min.js' %}"></script>
+<script>
+    tinymce.init({
+        selector: 'textarea',
+        plugins: 'link image code',
+        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image',
+        height: 360,
+    });
+</script>
+{% endblock %}
+

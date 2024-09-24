@@ -1,0 +1,405 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+
+{% block style_block %}
+.page-banner{
+	background-color:#121619;
+	background-image: url("{% static 'restaurant/images/menu-banner-1.png' %}");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+{% endblock %}
+
+
+{% block body_block %}
+	<section class="page-banner" >
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="page-title">
+						<h1 class="page-headding">Food Menus</h1>
+						<ul>
+							<li><a href="{% url 'index' %}" class="page-name">Home</a></li>
+							<li>Menu</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- --------        --------
+		Page Banner End
+	--------        -------- -->
+
+
+	<section class="menu-list pt-100">
+		<div class="container">
+			<div class="row mb-5">
+			{% if 'search' in request.POST %}
+				<div class="col-xl-1 col-lg-1 col-md-1 py-3">
+					<a href="{% url 'menu' %}" style="color:#D68121; font-size:20px;">ALL</a>
+				</div>
+				 <div class="col-xl-8 offset-xl-3 col-lg-8 offset-lg-3 col-md-8 offset-md-3">
+					  <form method="POST" >
+						  {% csrf_token %}
+						<div class="input-group input-group-lg" style="height:65px;">
+							<div class="input-group-prepend">
+								<div class="input-group-text px-4" style="background-color:#DEB88C;border-top-left-radius:20px;  border-bottom-left-radius:20px;">
+									<span><i class="fas fa-search"></i></span>
+								</div>
+							</div>
+							<input type="text" class="form-control" name="search_value" style="background-color:#DEB88C; border-width:0px; height:65px;" placeholder="What do you want to eat?">
+							<div class="input-group-append">
+								<button type="submit" name="search" class="input-group-text d-inline-block text-center pt-3" style="background-color:#D68727; color:white; cursor:pointer; width:200px; border-top-right-radius:20px;  border-bottom-right-radius:20px;">SEARCH</button>
+							</div>
+						</div>
+				  </form>
+				 </div>
+			{% else %}
+				 <div class="col-xl-8 offset-xl-4 col-lg-8 offset-lg-4 col-md-8 offset-md-4">
+					  <form method="POST" >
+						  {% csrf_token %}
+						<div class="input-group input-group-lg" style="height:65px;">
+							<div class="input-group-prepend">
+								<div class="input-group-text px-4" style="background-color:#DEB88C;border-top-left-radius:20px;  border-bottom-left-radius:20px;">
+									<span><i class="fas fa-search"></i></span>
+								</div>
+							</div>
+							<input type="text" class="form-control" name="search_value" style="background-color:#DEB88C; border-width:0px; height:65px;" placeholder="What do you want to eat?">
+							<div class="input-group-append">
+								<button type="submit" name="search" class="input-group-text d-inline-block text-center pt-3" style="background-color:#D68727; color:white; cursor:pointer; width:200px; border-top-right-radius:20px;  border-bottom-right-radius:20px;">SEARCH</button>
+							</div>
+						</div>
+				  </form>
+				 </div>
+			{% endif %}
+			</div>
+
+			{% if 'search' in request.POST %}
+			<div class="row">
+				<div class="col">
+					<div class="alert alert-warning" style="color:black;">Search result: Total {{total_searched}} foods found.</div>
+				</div>
+				<div role="tabpanel" class="row tab-pane fade in active show">
+
+					{% for product in search_products %}
+					<div class="col-xl-4 col-lg-4 col-md-6">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{ product.pro_id.info }}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+			</div>
+			</div>
+			{% endif %}
+
+			{% if not 'search' in request.POST %}
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="menu-tabbing">
+						<ul id="tabs" class="nav nav-tabs p-2" role="tablist">
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link current" data-tab="tab-all_foods"><a href="#tab-all_foods" role="tab" data-toggle="tab" class="active"> all</a></li>
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="tab-beverage"><a href="#tab-beverage" role="tab" data-toggle="tab"> beverages</a></li>
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="tab-pizza"><a href="#tab-pizza" role="tab" data-toggle="tab"> pizzas</a></li>
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="tab-fast-food"><a href="#tab-fast-food" role="tab" data-toggle="tab"> fast-food</a></li>
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="tab-bar-be-coe"><a href="#tab-bar-be-coe" role="tab" data-toggle="tab"> bar-be-coe</a></li>
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="tab-rice-biryani"><a href="#tab-rice-biryani" role="tab" data-toggle="tab">biryani</a></li>
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="tab-afghani-special"><a href="#tab-afghani-special" role="tab" data-toggle="tab">afghani</a></li>
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="tab-pakistani"><a href="#tab-pakistani" role="tab" data-toggle="tab"> pakistani</a></li>
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="tab-chinese"><a href="#tab-chinese" role="tab" data-toggle="tab"> chinese</a></li>
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="tab-fish"><a href="#tab-fish" role="tab" data-toggle="tab">fish</a></li>
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="tab-special-juice"><a href="#tab-special-juice" role="tab" data-toggle="tab">Special Juice</a></li>
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="tab-special-top"><a href="#tab-special-top" role="tab" data-toggle="tab">Special Top</a></li>
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="tab-soup"><a href="#tab-soup" role="tab" data-toggle="tab">soup</a></li>
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="tab-sweets"><a href="#tab-sweets" role="tab" data-toggle="tab">Sweets</a></li>
+							<li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="tab-salad"><a href="#tab-salad" role="tab" data-toggle="tab">Salad</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="tab-content">
+				<div role="tabpanel" class="row tab-pane fade in active show" id="tab-all_foods">
+					{% for product in all_products %}
+					<div class="col-xl-4 col-lg-4 col-md-6">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{ product.pro_id.info }}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				<div role="tabpanel" class="row tab-pane fade" id="tab-beverage">
+					{% for product in beverage %}
+					<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="100">{{product.pro_id.info}}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				<div role="tabpanel" class="row tab-pane fade" id="tab-pizza">
+					{% for product in pizza %}
+					<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{product.pro_id.info}}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-fast-food">
+					{% for product in fast_food %}
+					<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{product.pro_id.info}}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-bar-be-coe">
+					{% for product in bar_be_coe %}
+					<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{product.pro_id.info}}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-rice-biryani">
+					{% for product in rice_biryani %}
+					<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{product.pro_id.info}}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-afghani-special">
+					{% for product in afghani_special %}
+					<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{product.pro_id.info}}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-pakistani">
+					{% for product in pakistani %}
+					<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{product.pro_id.info}}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-chinese">
+					{% for product in chinese %}
+					<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{product.pro_id.info}}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-fish">
+					{% for product in fish %}
+					<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{product.pro_id.info}}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-special-juice">
+					{% for product in special_juice %}
+					<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{product.pro_id.info}}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-special-top">
+					{% for product in special_top %}
+					<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{product.pro_id.info}}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-soup">
+					{% for product in soup %}
+					<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{product.pro_id.info}}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-sweets">
+					{% for product in sweets %}
+					<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{product.pro_id.info}}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+				<div role="tabpanel" class="row tab-pane fade" id="tab-salad">
+					{% for product in salad %}
+					<div class="col-xl-4 col-lg-4 col-md-4">
+						<div class="menu-list-box">
+							<div class="list-img"><a href="{% url 'pro_details' product.pro_id.id  %}"><img src="{{product.photo6.url}}" alt="pizza"></a></div>
+							<div class="menu-detail">
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-name">{{product.pro_id.name}}</a>
+								<p class="iteam-desc limit-string" data-max-length="200">{{product.pro_id.info}}</p>
+								<a href="{% url 'pro_details' product.pro_id.id  %}" class="iteam-order">order now</a>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+			</div>
+			{% endif %}
+		</div>
+	</section>
+
+
+	<!-- Order Now -->
+	<section class="online-booking ptb">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-6 col-lg-6 col-md-6">
+					<div class="max-w-390">
+						<div class="headding-part">
+							<p  class="headding-sub">Fresh From Afghan Shahee Hotel & Restaurnat</p>
+							<h2 class="headding-title text-uppercase font-weight-bold">Order Now</h2>
+						</div>
+						<p class="online-des" style="font-size:20px">
+							Place your order now and satisfy your cravings. Discover a world of flavors, convenience, and culinary delights. Don't wait any longer—indulge in a delightful dining experience with just a few clicks. Order now!
+						</p>
+						<a href="tel:+93789401700" class="online-call">+93 (0) 789401700</a>
+					</div>
+				</div>
+				<div class="col-xl-6 col-lg-6 col-md-6 text-center">
+					<h2 class="book-table text-uppercase">Free Delivery</h2>
+					<img src="{% static  'restaurant/images/free-delivery.png' %}" alt="">
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Order Now End -->
+
+	<div class="top-scrolling">
+		<a href="#header" class="scrollTo"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
+	</div>
+{% endblock %}
+
+
+
+{% block script_block %}
+<script>
+
+	 var limitStringElements = document.querySelectorAll('.limit-string');
+
+    limitStringElements.forEach(function(element) {
+        var maxLength = parseInt(element.getAttribute('data-max-length'), 10);
+        var text = element.textContent;
+
+        if (text.length > maxLength) {
+            element.textContent = text.slice(0, maxLength) + '...';
+        }
+    });
+
+</script>
+{% endblock %}

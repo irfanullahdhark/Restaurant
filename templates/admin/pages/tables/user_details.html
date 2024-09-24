@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Users Details</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item">Users</li>
+              <li class="breadcrumb-item active">User Details</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- /.row -->
+
+        <div class="row">
+          <div class="col col-md-6 offset-md-3">
+
+            <div class="card">
+              <div class="card-header">
+                 <div class="row">
+                    <div class="col-4 col-md-4">
+                        {% if customer.photo %}
+                        <img src="{{customer.photo.url}}" alt="" class="rounded-circle" style="width:100%;">
+                        {% endif %}
+                    </div>
+                    <div class="col-5 mt-4 offset-1">
+                            <h1>{{customer.first_name}}</h1>
+                            <h6><span class="text-muted">{{customer.id}}</span></h6>
+                    </div>
+                 </div>
+                  
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                    <tr>
+                      <th>Username</th>
+                      <td>{{customer.username}}</td>
+                    </tr>                    
+                    <tr>
+                      <th>Email</th>
+                      <td>{{customer.email}}</td>
+                    </tr>                    
+                    <tr>
+                      <th>Phone</th>
+                      <td>+93(0) {{customer.phone}}</td>
+                    </tr>                    
+                                       
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+
+            <div class="card">
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table m-0">
+                      <thead>
+                      <tr>
+                        <th>Order ID</th>
+                        <th>Products Ordered</th>
+                        <th>Total Money</th>
+                        <th>Status</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {% for order in orders %}
+                      <tr>
+                        <td><a href="{% url 'order_details' order.id %}">{{order.id}}</a></td>
+                        <td>
+                          <div class="sparkbar" data-color="#00a65a" data-height="20">
+                              {% for product in order.ordered_products.all %}
+                                {{product}} <b>, </b>
+                              {% endfor %}
+                          </div>
+                        </td>
+                        <td>{{order.subtotal}}</td>
+                          {% if order.status == 'undelivered' %}
+                            <td><span class="badge badge-danger">{{order.status}}</span></td>
+                          {% else %}
+                             <td><span class="badge badge-success">{{order.status}}</span></td>
+                          {% endif %}
+                      </tr>
+                      {% endfor %}
+
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.table-responsive -->
+                </div>
+                <!-- /.card-body -->
+              </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+    </div>
+  
+  <!-- /.content-wrapper -->
+
+{% endblock %}
+
+
+

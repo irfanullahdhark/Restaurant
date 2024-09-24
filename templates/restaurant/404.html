@@ -1,0 +1,39 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block style_block %}
+
+/* -------------// 404 Page //------------- */
+.error-part{background: #121619;border-bottom: 1px solid #202529;}
+.error-content{padding-top: 50px;}
+.error-content h2{color: #fff;margin-top: 30px;font-size: 40px;}
+.error-img{max-width: 600px;margin: 0px auto;text-align: right;}
+.error-img .error-img-top{animation-name: zoom-fade;animation-duration: 8s;animation-iteration-count: infinite;animation-timing-function: linear;-webkit-animation-name: zoom-fade;-webkit-animation-duration: 8s;-webkit-animation-iteration-count: infinite;-webkit-animation-timing-function: linear;}
+@-webkit-keyframes zoom-fade {0% {-webkit-transform: scale(0.8);transform: scale(0.8);}50% {-webkit-transform: scale(1);transform: scale(1);}100% {
+    -webkit-transform: scale(0.8);transform: scale(0.8);}}
+@keyframes zoom-fade {0% {-webkit-transform: scale(0.8);transform: scale(0.8);}50% {-webkit-transform: scale(1);transform: scale(1);}100% {
+    -webkit-transform: scale(0.8);transform: scale(0.8);}}
+
+{% endblock %}
+
+
+
+{% block body_block %}
+	<div class="error-part align-center headding-part ptb">
+		<div class="container">
+			<div class="error-content">
+				<div class="error-img">
+					<img src="{% static 'restaurant/images/error-img-top.png' %}" alt="error-img-top" class="error-img-top">
+					<img src="{% static 'restaurant/images/error-img.png' %}" alt="error-img">
+				</div>
+				<h2 style="color: aliceblue;">Ooops! 404 - Page Not Found</h2>
+				<a href="{% url 'index' %}" class="com-btn">Back To Home</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="top-scrolling">
+		<a href="#top" class="scrollTo"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
+	</div>
+
+{% endblock %}

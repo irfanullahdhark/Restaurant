@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block links_block %}
+
+  <link type="image/x-icon" href="images/fav-icon.png" rel="icon">
+	<link rel="stylesheet" type="text/css" href="{% static 'admin/products/css/glass-case.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'admin/products/css/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'admin/products/css/responsive.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'admin/products/css/jssocials.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'admin/products/css/jssocials-theme-classic.css' %}">
+	<script src="{% static 'admin/products/js/modernizr.js' %}"></script>
+
+{% endblock %}
+
+
+{% block body_block %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Product Detail</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item">Product List</li>
+              <li class="breadcrumb-item active">Product Details</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- Main content -->
+    <section class="product-det pt-100 content">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-5 col-md-6 col-12">
+            <div class="align-center mb-md-30">
+                <ul id="glasscase" class="gc-start">
+                    <li><img src="{{ product.photo1.url }}" alt="product image" data-gc-caption="Your caption text" /></li>
+                    {% if product.photo2 %}
+                    <li><img src="{{ product.photo2.url }}" alt="product image" /></li>
+                    {% endif %}
+                     {% if product.photo3 %}
+                    <li><img src="{{ product.photo3.url }}" alt="product image" /></li>
+                    {% endif %}
+                   {% if product.photo4 %}
+                    <li><img src="{{ product.photo4.url }}" alt="product image"  /></li>
+                    {% endif %}
+                   {% if product.photo5 %}
+                  <li><img src="{{ product.photo5.url }}" alt="product image" /></li>
+                   {% endif %}
+                    <li><img src="{{ product.photo6.url }}" alt="product image" /></li>
+                </ul>
+            </div>
+          </div>
+          <div class="col-xl-7 col-lg-7 col-md-7">
+            <div class="shop-detail">
+              <div class="shop-name">
+                <h3 class="title-shop">{{product.pro_id.name}}</h3>
+                <div class="price-shop">
+                    {% if product.pro_id.old_price %}
+                  <span class="filter-price filter-price-r">{{product.pro_id.old_price}} AFG</span>
+                    {% endif %}
+                  <span class="filter-price ">{{product.pro_id.price}} AFG</span>
+                  <span class="filter-price ml-5">category: <b> {{product.pro_id.category}}</b></span>
+                </div>
+                <p class="shop-desc">{{product.pro_id.info}}</p>
+                <h4>Descriptions</h4>
+                <p>{{product.pro_id.description}}</p>
+              </div>
+              
+
+              <div class="wiselist">
+                <div class="share" id="share">
+
+                </div>
+              </div>
+              <a href="{% url 'edit_product' product.pro_id.id  %}" class="btn mt-5 w-25 mb-3" style="background-color: orange; font-size: 20px;">Edit</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <footer class="main-footer">
+  </footer>
+
+{% endblock %}
+
+
+{% block scripts_block %}
+<script src="{% static 'admin/products/js/jquery.min.js' %}"></script>
+<script src="{% static 'admin/products/js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'admin/products/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'admin/products/js/modernizr.js' %}"></script>
+<script src="{% static 'admin/products/js/script.js' %}"></script>
+<script src="{% static 'admin/products/js/social-share.js' %}"></script>
+<script>
+    $(document).ready( function () {
+        // If your <ul> has the id "glasscase"
+        $('#glasscase').glassCase({ 
+             'thumbsPosition': 'bottom', 
+            'widthDisplayPerc' : 100,
+            isDownloadEnabled: false,
+        });
+        $("#share").jsSocials({
+
+          text : "Enjoy With Afghan Shahee Hotel & Restaurant",
+          showLabel: false ,
+
+          shares: ["twitter","facebook","whatsapp","pinterest"]
+        });
+    });
+</script>
+
+{% endblock %}
+

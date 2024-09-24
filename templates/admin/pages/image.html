@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="{% static 'admin/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</head>
+<body style="background-color:#1d2327; display:flex; justify-content:center; align-item:center; height:100vh;" >
+<img src="{{ pic.image.url }}" alt="{{pic.title}}" title="{{pic.title}}">
+{% csrf_token %}
+
+</body>
+</html>

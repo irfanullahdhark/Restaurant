@@ -1,0 +1,136 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block style_block %}
+#btn{
+	color: orange;
+}
+#btn:hover{
+	color: black;
+}
+{% endblock %}
+
+{% block body_block %}
+
+	<section class="page-banner" style="background: #121619 url({% static 'restaurant/images/blog-5.jpg' %}) no-repeat center / cover;">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="page-title">
+						<h1 class="page-headding">Blog</h1>
+						<ul>
+							<li><a href="{% url 'index' %}" class="page-name">Home</a></li>
+							<li><a href="blog-leftside.html" class="page-name">Blog</a></li>
+							<li>Blog Detail</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="blog-detail pt-100">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="blog-box">
+						<div class="blog-img"><img src="{{post.post_img.url}}" alt="blog"></div>
+						<ul>
+							<li>{{post.post_author}}</li>
+							<li><a href="#">{{number_of_post_comments}} comments</a></li>
+						</ul>
+						<h2>{{post.post_sub}}</h2>
+						<p>{{post.post_desc}}</p>
+					
+						<div class="teg-desc">
+							<div class="tag-img"><img src="{{post.post_res.res_img.url}}" alt="tag"></div>
+							<div class="tag-det">
+								<label class="det-title">{{post.post_res.res_name}}</label>
+								<p class="det-description">{{post.post_res.res_info}}</p>
+							</div>
+						</div>
+						<div class="comments">
+							<h2 class="title-com">comments </h2>
+							{% for comment in post_comments %}
+							{% if forloop.counter0 <= 2 %}
+							<div class="comments-box">
+								{% if comment.cust_img %}
+								<div class="comment-img"><img src="{{comment.cust_img.url}}" alt="img"></div>
+								{% endif %}
+								<div class="comment-text">
+									<div class="details-com">
+										<label class="name-com">{{comment.cust_name}}</label>
+										<p class="desc-com">{{comment.message}}</p>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+
+							{% if forloop.counter0 > 2 %}
+								<div class="comments-box hiddens d-none ">
+									<div class="comment-img"><img src="{{comment.cust_img.url}}" alt="img"></div>
+									<div class="comment-text">
+										<div class="details-com">
+											<label class="name-com">{{comment.cust_name}}</label>
+											<p class="desc-com">{{comment.message}}</p>
+										</div>
+									</div>
+								</div>
+							{% endif %}
+
+							{% endfor %}
+							<a class="iteam-order" id="btn">Show More Comments</a>
+						</div>
+						<div class="leave">
+							<h2 class="title-com">Leave Your Comments </h2>
+							<form method="POST" novalidate>
+								{% csrf_token %}
+								<div class="row">
+									<div class="col-xl-12 col-lg-12 col-md-12">
+										{% for field in form %}
+										<div class="form-group">
+										    {{field }}
+											{% if field.errors %}
+												{% for error in field.errors %}
+													<span class="text-danger">{{error}}</span>
+												{% endfor %}
+											{% endif %}
+										</div>
+										{% endfor %}
+									</div>
+									<div class="col-xl-12 col-lg-12 col-md-12">
+										<input type="submit" name="submit" value="leave message" class="post-com">
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div class="top-scrolling">
+		<a href="#header" class="scrollTo"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
+	</div>
+
+{% endblock %}
+
+
+{% block script_block %}
+<script>
+	$(document).ready(function(){
+		var i = 0;
+		$('#btn').click(function(){
+			$('.hiddens').toggleClass('d-none');
+			if(i == 0){
+				$(this).text('show less')
+				i = 1;
+			}else{
+				i = 0;
+				$(this).text('Show More Comments')
+			}
+		})
+	})
+</script>
+{% endblock %}

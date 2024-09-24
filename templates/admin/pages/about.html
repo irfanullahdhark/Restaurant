@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body_block %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="background-color:#D2C098;">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">About</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">About</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- about form -->
+        <div class="col-md-8 offset-md-2" >
+            <!-- USERS LIST -->
+            <div class="card" style="background-color:#F0BE55; color:#000;">
+              <div class="card-header">
+                <h3 class="card-title">Enter Restaurant Information</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body p-0">
+                  <form method="POST" enctype="multipart/form-data" class="m-2" novalidate>
+                      {% csrf_token %}
+                      {% for field in form %}
+                      <label for="{{field.id_for_label}}">{{field.label}}</label>
+                      {{field}}
+                      {% for error in field.errors %}
+                        <span class="text-danger">{{error}}</span>
+                      {% endfor %}
+                      {% endfor %}
+                      <input type="submit" name="submit" value="save" class="btn btn-success m-2" >
+                      {% if data %}
+                      <a href="{% url 'about_update' data.0.id %}" class="btn btn-warning m-2">Upload</a>
+                      {% endif %}
+                  </form>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!--/.card -->
+          </div>
+        <!-- end about form -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock %}
+
+
+{% block scripts_block %}
+<script src="{% static 'tinymce/tinymce.min.js' %}"></script>
+<script>
+    tinymce.init({
+        selector: 'textarea',
+        plugins: 'link image code',
+        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image',
+        height: 360,
+    });
+</script>
+{% endblock %}

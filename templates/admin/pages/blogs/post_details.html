@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block links_block %}
+<link rel="stylesheet" href="{% static 'admin/blog/css/style.css' %}">
+{% endblock %}
+
+
+{% block style_block %}
+
+
+{% endblock %}
+
+
+{% block body_block %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Blogs</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item">All Post</li>
+              <li class="breadcrumb-item active">Post Details</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- /.row -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <section class="blog-detail pt-100">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12">
+                            <div class="blog-box ">
+                                <div class="blog-img my-4 " id="post_img">
+                                    <img src="{{post.post_img.url}}" alt="">
+                                </div>
+                                <ul>
+                                    <li>{{post.post_author}}</li>
+                                    <li><a href="#">0 comments</a></li>
+                                </ul>
+                                <h2>{{post.post_sub}}</h2>
+                                <p>{{post.post_desc}}</p>
+                                <div class="teg-desc">
+                                    <div class="tag-img"><img src="{{post.post_res.res_img.url}}" alt="tag"></div>
+                                    <div class="tag-det">
+                                        <label class="det-title">{{post.post_res.res_name}}</label>
+                                        <p class="det-description">{{post.post_res.res_info}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+{% endblock %}
+  
+
+

@@ -1,0 +1,92 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block style_block %}
+#message{
+	transition: all 2s ease;
+}
+
+{% endblock %}
+
+
+{% block body_block %}
+	<!-- banner start -->
+	<section class="page-banner" style="background: #121619 url({% static 'restaurant/images/blog-8.jpg' %}) no-repeat center / cover;">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="page-title">
+						<h1 class="page-headding">Login</h1>
+						<ul>
+							<li><a href="index.html" class="page-name">Home</a></li>
+							<li>Login</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- banner end -->
+
+  	<!-- contact form  -->
+	<section class="contact ptb">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					{% if messages %}
+					<div class="text-center mb-5 mt-0" id="message">
+							{% for message in messages %}
+								<h1 class="alert alert-danger">{{message}}</h1>
+							{% endfor %}
+					</div>
+					{% endif %}
+					<div class="headding-part text-center">
+						<h2 class="headding-title text-uppercase font-weight-bold">Login Into Your Account</h2>
+						<p>Create Account? <a href="{% url 'signup' %}" class="register_link">Register Here</a></p>
+					</div>
+				</div>
+			</div>
+			<div class="contact-in">
+				<div class="row">
+					<div class="col-md-8 offset-2">
+						<div class="leave">
+							<form method="POST" novalidate>
+								{% csrf_token %}
+								<div class="form-group">
+									{% for field in form %}
+										<label for="{{field.id_for_label}}">{{field.label}}</label>
+										{{field}}
+										{% if field.errors %}
+										{% for error in field.errors %}
+											<span class="text-danger ml-3 ">{{error}}</span>
+										{% endfor %}
+										{% endif %}
+									{% endfor %}
+								</div>
+
+								<input type="submit" name="submit" value="Login" class="post-com">
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- contact form end -->
+
+{% endblock %}
+
+
+{% block script_block %}
+<script>
+   var message = setTimeout(removeMessage,5000);
+
+   function removeMessage(){
+		document.getElementById('message').style.display = 'none';
+   }
+</script>
+{% endblock %}
+
+
+
+

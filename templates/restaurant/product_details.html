@@ -1,0 +1,277 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block links_block %}
+
+  	<link type="image/x-icon" href="images/fav-icon.png" rel="icon">
+	<link rel="stylesheet" type="text/css" href="{% static 'admin/products/css/glass-case.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'admin/products/css/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'admin/products/css/responsive.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'admin/products/css/jssocials.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'admin/products/css/jssocials-theme-classic.css' %}">
+	<script src="{% static 'admin/products/js/modernizr.js' %}"></script>
+
+{% endblock %}
+
+{% block style_block %}
+#btn{
+	color: orange;
+}
+#btn:hover{
+	color: black;
+}
+{% endblock %}
+
+
+{% block body_block %}
+
+	<!--  banner start  -->
+	<section class="page-banner" style="background: #121619 url({% static 'restaurant/images/blog-9.jpg' %}) no-repeat center / cover;">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="page-title">
+						<h1 class="page-headding">{{ product.pro_id.name }}</h1>
+						<ul>
+							<li><a href="index.html" class="page-name">Home</a></li>
+							<li><a href="shop-categories.html" class="page-name">Order Online</a></li>
+							<li>{{ product.pro_id.name }}</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- banner end -->
+
+	<!-- Main content -->
+    <section class="product-det pt-100 content">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-5 col-md-6 col-12">
+            <div class="align-center mb-md-30">
+                <ul id="glasscase" class="gc-start">
+                    <li><img src="{{ product.photo1.url }}" alt="product image" data-gc-caption="Your caption text" /></li>
+                    {% if product.photo2 %}
+                    <li><img src="{{ product.photo2.url }}" alt="product image" /></li>
+                    {% endif %}
+                     {% if product.photo3 %}
+                    <li><img src="{{ product.photo3.url }}" alt="product image" /></li>
+                    {% endif %}
+                   {% if product.photo4 %}
+                    <li><img src="{{ product.photo4.url }}" alt="product image"  /></li>
+                    {% endif %}
+                   {% if product.photo5 %}
+                  <li><img src="{{ product.photo5.url }}" alt="product image" /></li>
+                   {% endif %}
+                    <li><img src="{{ product.photo6.url }}" alt="product image" /></li>
+                </ul>
+            </div>
+          </div>
+          <div class="col-xl-7 col-lg-7 col-md-7">
+            <div class="shop-detail">
+              <div class="shop-name">
+                <h3 class="title-shop">{{product.pro_id.name}}</h3>
+                <div class="price-shop">
+					{% if product.pro_id.old_price %}
+                  <span class="filter-price filter-price-r">{{product.pro_id.old_price}} AFG</span>
+					{% endif %}
+                  <span class="filter-price ">{{product.pro_id.price}} AFG</span>
+                  <span class="filter-price ml-5">category: <b> {{product.pro_id.category}}</b></span>
+                </div>
+                <p class="shop-desc">{{product.pro_id.info}}</p>
+              </div>
+
+				<div class="quantity-product">
+					<form method="POST" action="{% url 'cart' %}">
+						{% csrf_token %}
+						<input type="hidden" name="pro_id" value="{{product.id}}">
+						<label class="quantity">Qty:</label>
+						{% for field in cart_form %}
+							{{field}}
+							{% if field.errors %}
+								{% for error in field.errors %}
+									<span class="text-danger">{{error}}</span>
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+						<button type="submit" class="add-cart"><i class="fa fa-shopping-bag" aria-hidden="true"></i> Add to cart</button>
+					</form>
+				</div>
+
+              <div class="wiselist">
+                <div class="share" id="share">
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+
+	<!-- Product Description And Review -->
+	<section class="desc-tabbing pt-100">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="border-tab">
+						<ul class="panel-tab">
+							<li class="tab-link current" data-tab="tab-1"><a href="javascript:void(0)">Description</a></li>
+							<li class="tab-link" data-tab="tab-3"><a href="javascript:void(0)">Reviews</a></li>
+						</ul>
+						<div class="product-desc-tab current" id="tab-1">
+							<p>{{product.pro_id.description}}</p>
+						</div>
+						<div class="product-desc-tab" id="tab-3">
+							<div class="comments">
+							<h2 class="title-com"> {{customer_reviews | length }} comments </h2>
+								{% if customer_reviews %}
+									{% for review in customer_reviews %}
+									{% if forloop.counter0 <= 2 %}
+									<div class="comments-box">
+										{% if review.customer_id.photo %}
+										<div class="comment-img"><img src="{{review.customer_id.photo.url}}" alt="img"></div>
+										{% endif %}
+										<div class="comment-text">
+											<div class="details-com">
+												<label class="name-com">{{review.customer_id.first_name}} ({{review.comnt_data}})</label>
+												<p class="desc-com">{{review.comment}}</p>
+											</div>
+										</div>
+									</div>
+									{% endif %}
+
+									{% if forloop.counter0 > 2 %}
+										<div class="comments-box hiddens d-none ">
+											<div class="comment-img"><img src="{{review.customer_id.photo.url}}" alt="img"></div>
+											<div class="comment-text">
+												<div class="details-com">
+													<label class="name-com">{{review.customer_id.first_name}} ({{review.comnt_data}})</label>
+													<p class="desc-com">{{review.comment}}</p>
+												</div>
+											</div>
+										</div>
+									{% endif %}
+
+									{% endfor %}
+								{% endif %}
+							<a class="iteam-order" id="btn">Show More Comments</a>
+						</div>
+							<div class="leave-comment-part pt-100">
+								<h3 class="reviews-head mb-30">Leave A Comment</h3>
+								<form class="main-form" method="POST">
+									{% csrf_token %}
+									<div class="row">
+										<div class="col-12">
+											{% for field in form %}
+											<div class="form-group">
+												{{field}}
+												{% if field.errors %}
+													{% for error in field.errors %}
+														{{ error }}
+													{% endfor %}
+												{% endif %}
+											</div>
+											{% endfor %}
+										</div>
+										<div class="col-12">
+											<button type="submit" class="btn post-comm">Post Comment</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Product Description And Review -->
+
+	<!-- Related Product -->
+	<section class="releted-product special-menu pt-100 pb-100">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="headding-part text-center pb-50">
+						<p class="headding-sub">Fresh From Green Hut </p>
+						<h2 class="headding-title text-uppercase font-weight-bold">Related Products</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				{% for product in related_products %}
+				<div class="col-xl-3 col-lg-3 col-md-4 text-center pt-20">
+					<div class="menu-img"><a href="{% url 'pro_details' product.pro_id.id %}"><img src="{{product.photo1.url}}" alt="menu" class="menu-image"></a></div>
+					<a href="{% url 'pro_details' product.pro_id.id %}" class="menu-title text-uppercase">{{product.pro_id.name}}</a>
+					<p class="menu-des limit-string" data-max-length="200">{{product.pro_id.info}}</p>
+					<span class="menu-price">{{ product.pro_id.price}} Afs</span>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</section>
+	<!-- Related Product End   -->
+	<div class="top-scrolling">
+		<a href="#header" class="scrollTo"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
+	</div>
+
+{% endblock %}
+
+{% block script_block %}
+<script src="{% static 'admin/products/js/jquery.min.js' %}"></script>
+<script src="{% static 'admin/products/js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'admin/products/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'admin/products/js/modernizr.js' %}"></script>
+<script src="{% static 'admin/products/js/social-share.js' %}"></script>
+<script src="{% static 'admin/products/js/script.js' %}"></script>
+<script>
+
+	 var limitStringElements = document.querySelectorAll('.limit-string');
+
+    limitStringElements.forEach(function(element) {
+        var maxLength = parseInt(element.getAttribute('data-max-length'), 10);
+        var text = element.textContent;
+
+        if (text.length > maxLength) {
+            element.textContent = text.slice(0, maxLength) + '...';
+        }
+    });
+
+
+    $(document).ready( function () {
+    	var i = 0;
+		$('#btn').click(function(){
+			$('.hiddens').toggleClass('d-none');
+			if(i == 0){
+				$(this).text('show less')
+				i = 1;
+			}else{
+				i = 0;
+				$(this).text('Show More Comments')
+			}
+		})
+
+        // If your <ul> has the id "glasscase"
+        $('#glasscase').glassCase({
+             'thumbsPosition': 'bottom',
+            'widthDisplayPerc' : 100,
+            isDownloadEnabled: false,
+        });
+
+         $("#share").jsSocials({
+
+          text : "Enjoy With Afghan Shahee Hotel & Restaurant",
+          showLabel: false ,
+
+          shares: ["twitter","facebook","whatsapp","pinterest"]
+        });
+    });
+
+</script>
+{% endblock %}
+
+

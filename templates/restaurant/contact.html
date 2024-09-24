@@ -1,0 +1,76 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+
+{% block body_block %}
+	<!-- banner start -->
+	<section class="page-banner" style="background: #121619 url({% static 'restaurant/images/blog-1.jpg' %}) no-repeat center / cover;">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="page-title">
+						<h1 class="page-headding">contact Us</h1>
+						<ul>
+							<li><a href="{% url 'index' %}" class="page-name">Home</a></li>
+							<li>Contact Us</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- banner end -->
+
+	<!-- contact form  -->
+	<section class="contact ptb">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="headding-part text-center">
+						<p class="headding-sub">Get in touch</p>
+						<h2 class="headding-title text-uppercase font-weight-bold">contact us</h2>
+					</div>
+				</div>
+			</div>
+			<div class="contact-in">
+				<div class="row">
+					<div class="col-xl-4 col-lg-4 col-md-5">
+						<div class="contact-detail">
+							<h3 class="contact-head">Contact Details</h3>
+							<p class="contact-desc">
+								For contact details, reach out to Afghan Shahee Restaurant. You can contact us at phone number or email address. We look forward to hearing from you!
+							</p>
+							<ul>
+								<li><i class="fa fa-home" aria-hidden="true"></i><a href="javascript:void(0)">Near Afghanistan bank In front of to nanagarhar business center, Nangarhar,Afghanistan</a></li>
+								<li><i class="fa fa-phone" aria-hidden="true"></i><a href="tel:+930789401700">+93 789 401 700</a>, <a href="tel:+93782002530">+93 782 002 530</a></li>
+								<li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:af.shaheehotel@gmail.com">af.shaheehotel@gmail.com</a></li>
+
+							</ul>
+						</div>
+					</div>
+					<div class="col-xl-8 col-lg-8 col-md-7">
+						<div class="leave">
+							<form method="POST" novalidate>
+								{% csrf_token %}
+								{% for field in form %}
+								<div class="form-group">
+									{{field}}
+									{% if field.errors %}
+										{% for error in field.errors %}
+											<span class="text-danger ml-2">{{error}}</span>
+										{% endfor %}
+									{% endif %}
+								</div>
+								{% endfor %}
+								<input type="submit" name="submit" value="Send Message" class="post-com">
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- contact form end -->
+
+
+{% endblock %}

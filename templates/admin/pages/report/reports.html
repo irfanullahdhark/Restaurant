@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+
+
+
+{% block style_block %}
+
+    @media print{
+        .prnt{
+            display : none;
+        }
+        .contentNotToPrint{
+            display: none;
+        }
+        .table{
+            height: 297mm;
+            width: 180mm;
+            background-color: #FF7F50 !important;
+        }
+        .table tr th{
+            color: black;
+        }
+
+
+
+    }
+
+{% endblock %}
+
+
+
+
+{% block body_block %}
+ <div class="content-wrapper" style="background-color:#D2C098;">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Reports</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+              <li class="breadcrumb-item active">Reports</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid col-xl-10 pb-5">
+
+
+        <div class="row" id="daily">
+          <div class="col col-md-10 offset-md-1">
+
+            <div class="card p-5" style="background-color:#FF7F50; color:white; font-weight:bolder;">
+              <div class="card-header">
+                  <h1>Daily Report</h1>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table" id="tab">
+                    <tr>
+                      <th>Today New Customers</th>
+                      <td>
+                          {% for user in today_new_user %}
+                            {{user}} <b>,</b>
+                          {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="w-25">Today Total Orders</th>
+                      <td>
+                          ({{today_total_orders}}) Orders:
+                          {% for order in today_orders %}
+                          <a href="{% url 'order_details' order.id %}" class="ml-5" style="color:black;">{{order.subtotal}} Afs </a> <b> , </b>
+                          {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Today Sold Products</th>
+                      <td>
+                          {% for order in today_orders %}
+                          {% for product in order.ordered_products.all %}
+                          <a href="{% url 'product_details' product.id %}" class="ml-2" style="color:black;">{{product.name}}</a> <b> , </b>
+                          {% endfor %}
+                          {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Today Area Of Deliveries</th>
+                      <td>
+                          {% for address in today_orders %}
+                            <span class="ml-3" style="color: black;">{{ address.addID.area }}</span> <b> , </b>
+                          {% endfor %}
+                      </td>
+                    </tr>
+                    <tr style="color:black;">
+                      <th>Today Total Sale</th>
+                      <td >{{today_total_sale}} Afs</td>
+                    </tr>
+                    <tr style="color:black;">
+                      <th><button class="btn btn-danger prnt" id="dprint">Print</button></th>
+                        <td></td>
+                    </tr>
+
+                </table>
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+
+
+        <div class="row mt-5" id="weekly">
+          <div class="col col-md-10 offset-md-1">
+
+            <div class="card p-5" style="background-color:#FF7F50; color:white; font-weight:bolder;">
+              <div class="card-header">
+                  <h1>Weekly Report</h1>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table">
+                    <tr>
+                      <th>Weekly New Customers</th>
+                      <td>
+                          {% for user in weekly_new_users %}
+                            {{user}} <b>,</b>
+                          {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="w-25">Weekly Total Orders</th>
+                      <td>
+                          ({{weekly_total_orders}}) Orders:
+                          {% for order in weekly_orders %}
+                          <a href="{% url 'order_details' order.id %}" class="ml-5" style="color:black;">{{order.subtotal}} Afs </a> <b> , </b>
+                          {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Weekly Sold Products</th>
+                      <td>
+                          {% for order in weekly_orders %}
+                          {% for product in order.ordered_products.all %}
+                          <a href="{% url 'product_details' product.id %}" class="ml-2" style="color:black;">{{product.name}}</a> <b> , </b>
+                          {% endfor %}
+                          {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Weekly Area Of Deliveries</th>
+                      <td>
+                          {% for address in weekly_orders %}
+                            <span class="ml-3" style="color: black;">{{ address.addID.area }}</span> <b> , </b>
+                          {% endfor %}
+                      </td>
+                    </tr>
+                    <tr style="color:black;">
+                      <th>Weekly Total Sale</th>
+                      <td >{{weekly_total_sale}} Afs</td>
+                    </tr>
+                    <tr style="color:black;">
+                      <th><button class="btn btn-danger prnt" id="wprint">Print</button></th>
+                        <td></td>
+                    </tr>
+
+                </table>
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+
+        <div class="row mt-5 " id="monthly">
+          <div class="col col-md-10 offset-md-1">
+
+            <div class="card p-5" style="background-color:#FF7F50; color:white; font-weight:bolder;">
+              <div class="card-header">
+                  <h1>Monthly Report</h1>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table">
+                    <tr>
+                      <th>Monthly New Customers</th>
+                      <td>
+                          {% for user in monthly_new_users %}
+                            {{user}} <b>,</b>
+                          {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="w-25">Monthly Total Orders</th>
+                      <td>
+                          ({{monthly_total_orders}}) Orders:
+                          {% for order in monthly_orders %}
+                          <a href="{% url 'order_details' order.id %}" class="ml-5" style="color:black;">{{order.subtotal}} Afs </a> <b> , </b>
+                          {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Monthly Sold Products</th>
+                      <td>
+                          {% for order in monthly_orders %}
+                          {% for product in order.ordered_products.all %}
+                          <a href="{% url 'product_details' product.id %}" class="ml-2" style="color:black;">{{product.name}}</a> <b> , </b>
+                          {% endfor %}
+                          {% endfor %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Monthly Area Of Deliveries</th>
+                      <td>
+                          {% for address in monthly_orders %}
+                            <span class="ml-3" style="color: black;">{{ address.addID.area }}</span> <b> , </b>
+                          {% endfor %}
+                      </td>
+                    </tr>
+                    <tr style="color:black;">
+                      <th>Monthly Total Sale</th>
+                      <td >{{monthly_total_sale}} Afs</td>
+                    </tr>
+                    <tr style="color:black;">
+                      <th><button class="btn btn-danger prnt" id="mprint">Print</button></th>
+                        <td></td>
+                    </tr>
+
+                </table>
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+
+
+      </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+
+  </div>
+{% endblock %}
+
+{% block scripts_block %}
+
+<script>
+    $(document).ready(function(){
+        $('#dprint').click(function(){
+             $('#daily').removeClass('contentNotToPrint');
+             $('#weekly').addClass('contentNotToPrint');
+             $('#monthly').addClass('contentNotToPrint');
+             window.print();
+
+        })
+
+         $('#wprint').click(function(){
+             $('#weekly').removeClass('contentNotToPrint');
+             $('#daily').addClass('contentNotToPrint');
+             $('#monthly').addClass('contentNotToPrint');
+             window.print();
+        })
+
+        $('#mprint').click(function(){
+             $('#monthly').removeClass('contentNotToPrint');
+             $('#weekly').addClass('contentNotToPrint');
+             $('#daily').addClass('contentNotToPrint');
+             window.print();
+        })
+    })
+</script>
+
+{% endblock %}
+

@@ -1,0 +1,129 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block style_block %}
+nav ul li a.pagination-links{
+	display:inline-block;
+	width:auto;
+}
+{% endblock %}
+
+
+{% block body_block %}
+	<section id="top" class="page-banner" style="background: #121619 url({% static 'restaurant/images/blog-1.jpg' %}) no-repeat center / cover;">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="page-title">
+						<h1 class="page-headding">Blog</h1>
+						<ul>
+							<li><a href="index.html" class="page-name">Home</a></li>
+							<li>Blog </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<section class="blog-main pt-100">
+		<div class="container">
+			<div class="row mb-4">
+				<div class="col">
+					{% if messages %}
+					{% for message in messages %}
+					<div {% if message.tags %}  class="alert alert-{{message.tags}}"  {% endif %}>
+						{{message}}.
+						 <a href="{% url 'blogs' %}">See All posts</a>
+					</div>
+					{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xl-9 col-lg-9 col-md-9">
+					{% for post in posts %}
+					<div class="blog-box">
+						<div class="blog-img"><a href="{% url 'blog_details' post.id %}"><img src="{{post.post_img.url}}" alt="blog"></a></div>
+						<ul>
+							<li>{{post.post_author}}</li>
+							<li>{{post.post_comment.all | length}} comments</li>
+							<li><span class="recent-sub">{{post.post_date}}</span></li>
+						</ul>
+						<h2><a href="{% url 'blog_details' post.id %}" class="blog-headding">{{post.post_sub}}</a></h2>
+						<p class="blog-desc limit-string" data-max-length="500">{{post.post_desc}}</p>
+						<a href="{% url 'blog_details' post.id %}" class="blog-btn">read More</a>
+					</div>
+					{% endfor %}
+					<div class="blog-pagination">
+						<nav>
+						<ul>
+							{% if posts.has_previous %}
+								<li><a href="?page={{posts.previous_page_number}}" class="px-2 pagination-links" style="color:#D68727;">previous</a></li>
+							{% else %}
+								<li class="disabled"><a class="px-2 pagination-links border">previous</a></li>
+							{% endif %}
+
+							<li class="active"><a href="">{{posts.number}}</a></li>
+
+							{% if posts.has_next %}
+							<li><a href="?page={{posts.next_page_number}}"  class="px-2 pagination-links" style="color:#D68727;">next</a></li>
+							{% else %}
+							<li class="disabled"><a class="px-2 pagination-links border">next</a></li>
+							{% endif %}
+
+						</ul>
+						</nav>
+					</div>
+				</div>
+				<div class="col-xl-3 col-lg-3 col-md-3">
+					<div class="blog-search">
+						<form method="POST" novalidate>
+							{% csrf_token %}
+							<input type="text" name="search" placeholder="Search..." class="blog-input" required>
+							<input type="submit" name="submit" class="find-blog">
+						</form>
+					</div>
+					<div class="recent-post">
+						<h2 class="categorie-head">Recent Post</h2>
+						<div class="recent-inner">
+							{% for post in recent_posts %}
+							<div class="recent-box">
+								<div class="recent-img"><a href="{% url 'blog_details' post.id %}"><img src="{{post.post_img.url}}" alt="blog"></a></div>
+								<div class="recent-text">
+									<span class="recent-sub">{{post.post_date}}</span>
+									<a href="{% url 'blog_details' post.id %}" class="recent-title">{{post.post_sub}}</a>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<div class="top-scrolling">
+		<a href="#header" class="scrollTo"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
+	</div>
+
+{% endblock %}
+
+{% block script_block %}
+<script>
+
+	 var limitStringElements = document.querySelectorAll('.limit-string');
+
+    limitStringElements.forEach(function(element) {
+        var maxLength = parseInt(element.getAttribute('data-max-length'), 10);
+        var text = element.textContent;
+
+        if (text.length > maxLength) {
+            element.textContent = text.slice(0, maxLength) + '...';
+        }
+    });
+
+</script>
+{% endblock %}

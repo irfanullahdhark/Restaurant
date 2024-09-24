@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>Afghan Shahee Hotel & Restaurant</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8" />
+	<link type="image/x-icon" href="{% static 'restaurant/images/fav-icon.png' %}" rel="icon">
+	<!-- <link rel="stylesheet" href="css/font-awesome.min.css"> -->
+	<link rel="stylesheet" type="text/css" href="{% static 'restaurant/css/animate.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'restaurant/css/owl.carousel.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'restaurant/css/bootstrap.min.css' %}"   >
+	<link rel="stylesheet" type="text/css" href="{% static 'restaurant/css/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'restaurant/css/responsive.css' %}">
+	<link rel="stylesheet" href="{% static 'fontawesome-free-6.4.0-web/css/all.min.css' %}">
+	<link rel="stylesheet" href="{% static 'fontawesome-free-6.4.0-web/css/fontawesome.min.css' %}">
+	{% block links_block %}
+
+	{% endblock %}
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- <script async src="google_analysis.js"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-142494086-2');
+    </script> -->
+
+	<style>
+		{% block style_block %}
+		{% endblock %}
+	</style>
+</head>
+<body>
+
+	<!-- Start preloader -->
+	<!-- <div id="preloader">
+		<label>Loading</label>
+	</div> -->
+	<!-- End preloader -->
+
+	<!-- header start -->
+	<header id="header">
+		<div class="container">
+			<div class="row m-0">
+				<div class="col-xl-3 col-lg-2 col-md-4 col-3 p-0">
+		            <div class="navbar-header">
+			               	<a class="navbar-brand page-scroll" href="{% url 'index' %}">
+			                	<!-- <img alt="pizzon" src="images/header-logo.png"> -->
+								<h2 style="color:#fd9d3e;">Logo</h2>
+
+			                </a>
+		            </div>
+			    </div>
+			    <div class="col-xl-9 col-lg-10 col-md-8 col-9 p-0 text-right">
+			        <div id="menu" class="navbar-collapse collapse" >
+			            <ul class="nav navbar-nav">
+				            <li class="level">
+				                <a href="{% url 'index' %}" class="page-scroll">Home</a>
+				            </li>
+				            <li class="level dropdown set">
+				                <a href="{% url 'menu' %}" class="page-scroll">Menu</a>
+				                <span class="opener plus"></span>
+				                <div class="megamenu mobile-sub-menu content megamenu-big">
+				                    <div class="megamenu-inner-top">
+				                        <ul class="sub-menu-level1">
+					                        <li class="level2 menu-list-d">
+					                            <div class="row">
+					                            	<div class="col-xl-9 col-lg-9 col-md-9">
+					                            		<div class="row">
+															{% for product in menu_products %}
+					                            			<div class="col-xl-4 col-lg-4 col-md-4">
+					                            				<div class="menu-grid">
+					                            					<a href="{% url 'pro_details' product.pro_id.id %}" class="menu-grid-center">
+						                            					<div class="pizza-menu">
+						                            						<img src="{{product.photo1.url}}" alt="pizza">
+						                            					</div>
+						                            					<div class="pizza-det">
+						                            						<p class="Pizza-name-1">{{product.pro_id.name}}</p>
+						                            						<span class="pizza-price-1">{{product.pro_id.name}}</span>
+						                            					</div>
+						                            				</a>
+					                            				</div>
+					                            			</div>
+															{% endfor %}
+
+					                            		</div>
+					                            	</div>
+					                            	<div class="col-xl-3 col-lg-3 col-md-3">
+					                            		<ul>
+					                            			<li><a href="{% url 'menu' %}">Menu list</a></li>
+					                            			<li><a href="{% url 'order_now' %}">Order Now</a></li>
+
+					                            		</ul>
+					                            	</div>
+					                            </div>
+					                        </li>
+
+				                        </ul>
+				                    </div>
+				                </div>
+				            </li>
+				            <li class="level set">
+				                <a href="{% url 'blogs' %}" class="page-scroll">Blog</a>
+
+				            </li>
+				            <li class="level">
+				                <a href="{% url 'contact' %}" class="page-scroll">Contact Us</a>
+				            </li>
+
+
+			            </ul>
+			        </div>
+			        <div class=" header-right-link">
+			            <ul>
+							{% if request.user.is_authenticated %}
+							 <li class="call-icon">
+			                	<a href="{% url 'profile' request.user.id %}">
+			                		<span class="icon"></span>
+			                		<div class="link-text">Account</div>
+			                	</a>
+			                </li>
+							{% else %}
+			                <li class="call-icon">
+			                	<a href="{% url 'login' %}">
+			                		<span class="icon"></span>
+			                		<div class="link-text">Login</div>
+			                	</a>
+			                </li>
+							{% endif %}
+
+			   				{% if request.user.is_authenticated %}
+			                <li class="cart-icon">
+			                	<a href="{% url 'cart' %}">
+			                		<span class="icon"></span>
+			                		<div class="link-text">{{items}} items - <span>{{total_price}}Afs</span></div>
+			                	</a>
+				                <div class="cart-dropdown header-link-dropdown">
+				                    <ul class="cart-list link-dropdown-list">
+										{% for product1 in cart_products %}
+				                      	<li> <a class="close-cart"><i class="fa fa-times-circle"></i></a>
+				                        	<div class="media"> <a href="{% url 'pro_details' product1.product.id  %}" class="pull-left"> <img alt="Pizzon" src="{{product1.product.product_photos.photo1.url}}"></a>
+												<div class="media-body"> <span><a href="{% url 'pro_details' product1.product.id  %}">{{product1.product.name}}</a></span>
+					                            <p class="cart-price">{{product1.product.price}}Afs</p>
+					                            <div class="product-qty">
+					                              	<label>Qty:</label>
+					                              	<div class="custom-qty">
+					                                	<input type="text" name="qty" maxlength="8" value="{{product1.quantity}}" title="Qty" class="input-text qty" disabled>
+					                              	</div>
+					                            </div>
+				                          	</div>
+				                        </div>
+				                      	</li>
+										{% endfor %}
+				                    </ul>
+				                    <p class="cart-sub-totle">
+				                    <span class="pull-left">Cart Subtotal</span>
+				                    <span class="pull-right"><strong class="price-box">{{total_price}}Afs</strong></span> </p>
+				                    <div class="clearfix"></div>
+				                    <div class="mt-20 text-left">
+				                    	<a href="{% url 'cart' %}" class="btn-color btn">Cart</a>
+				                    </div>
+				                </div>
+			                </li>
+							{% else %}
+							<li class="call-icon">
+			                	<a href="{% url 'signup' %}">
+			                		<span class="icon"></span>
+			                		<div class="link-text">Register</div>
+			                	</a>
+			                </li>
+							{% endif %}
+			                <li class="order-online">
+			                	<a href="{% url 'order_now' %}" class="btn btn-green">Order online</a>
+			                </li>
+			                <li class="side-toggle">
+			                  	<button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button"><span></span></button>
+			                </li>
+			            </ul>
+			        </div>
+			    </div>
+			</div>
+		</div>
+	</header>
+	<!-- header end -->
+
+    {% block body_block %}
+
+    {% endblock %}
+
+
+	<!-- footer  -->
+	<footer>
+		<div class="container">
+			<div class="footer">
+				<div class="row">
+					<div class="col-xl-4 col-lg-4 col-md-4 footer-box">
+						<div class="footer-logo">
+							<!-- <img src="images/footer-logo.png" alt="fooret-logo"> -->
+							<h1 style="color:#fd9d3e;">Restaurant Logo</h1>
+							<p class="footer-des">Kabul Nangarhar High Way Road, In Front Of Spenghar Hotel, Nangarhar, Afghanistan</p>
+							<ul>
+								{% if request.user_agent.is_mobile %}
+								<li>phone  - <a href="tel:+930789401700">+93 789 401 700</a>
+									<a href="tel:+93782002530">+93 782 002 530</a></li>
+								{% else %}
+									<li><p>phone: <a href=""><b>+93 789 401 700, +93 765 892 668</b></a> </p></li>
+								{% endif %}
+								<li>email  - <a href="mailto:af.shaheehotel@gmail.com">af.shaheehotel@gmail.com</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="col-xl-4 col-lg-4 col-md-4 footer-box">
+						<div class="opening-hours">
+							<h2>Opening Hours</h2>
+							<ul>
+								<li>Sat - Thur :  <span>6.00 am - 12.00 pm</span></li>
+								<li>Launch :  <span>Everyday</span></li>
+								<li>Friday :  <span class="footer-close">Closed After 12PM.</span></li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="col-xl-4 col-lg-4 col-md-4 footer-box">
+						<div class="useful-links">
+							<h2>useful links</h2>
+							<ul>
+<!--								<li><a href="#">Privacy Policy</a></li>-->
+								<li><a href="#">Order Tracking</a></li>
+								<li><a href="https://www.facebook.com/profile.php?id=100064032462897">Follow Us On Facebook</a></li>
+								<li><a href="{% url 'rest_about' %}">About</a></li>
+								<li><a href="{% url 'contact' %}">Contact Us</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="copyright">
+				<div class="row">
+					<div class="col-xl-6 col-lg-6 col-md-6 copyright-box">
+						<p class="copy-text">© Afghan Shahee Hotel & Restaurant all Rights Reserved. Designed And Developed By <a href="https://www.linkedin.com/in/irfan-khan-3b2519266/" target="_blank">Irfanullah Dhark</a></p>
+					</div>
+
+					<div class="col-xl-6 col-lg-6 col-md-6 copyright-box">
+						<ul>
+							<li><a href="https://www.facebook.com/irfanullah.ahmadzai.549/" target="_blank"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
+							<li><a href="https://twitter.com/IrfanKh06682459/" target="_blank"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+							<li><a href="https://www.linkedin.com/in/irfan-khan-3b2519266/" target="_blank"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
+							<li><a href="https://www.instagram.com/irfan.khan9902/" target="_blank"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- end footer -->
+
+	<script src="{% static 'restaurant/js/jquery.min.js' %}"></script>
+	<script src="{% static 'restaurant/js/owl.carousel.min.js' %}"></script>
+	<script src="{% static 'restaurant/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'restaurant/js/script.js' %}"></script>
+
+{% block script_block %}
+
+{% endblock %}
+
+
+</body>
+</html>

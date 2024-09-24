@@ -1,0 +1,298 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{%  block style_block %}
+.alert-error{
+	color: red;
+	font-size:30px;
+	font-weight: bolder;
+	background-color:pink;
+}
+{% endblock %}
+
+{% block body_block %}
+	<!-- banner  -->
+	<section class="page-banner" style="background: #121619 url({% static 'restaurant/images/blog-1.jpg' %}) no-repeat center / cover;">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="page-title">
+						<h1 class="page-headding">SHOPPING CART</h1>
+						<ul>
+							<li><a href="index.html" class="page-name">Home</a></li>
+							<li>SHOPPING CART</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- banner end -->
+
+	<!-- shopping cart  -->
+	<section class="shopping-cart ptb">
+		<div class="container">
+			{% if messages %}
+			{% for message in messages %}
+				<h2 {% if message.tags %} class="alert alert-{{message.tags}} text-center" {% endif %} id="msg">{{message}}</h2>
+			{% endfor %}
+			{% endif %}
+			<div class="cart-item-table commun-table">
+				<div class="table-responsive">
+				    <table class="table border mb-0">
+				        <thead>
+				            <tr>
+				                <th class="align-left">Product</th>
+				                <th class="align-left">Product Name</th>
+				                <th>Price</th>
+				                <th>Quantity</th>
+				                <th>Sub Total</th>
+				                <th>Action</th>
+				            </tr>
+				        </thead>
+				        <tbody id="product_cart_body">
+						{% for product1 in cart_products %}
+				            <tr>
+				                <td class="align-left">
+				                    <a href="{% url 'pro_details' product1.product.id %}">
+					                    <div class="product-image">
+					                        <img alt="Eshoper" src="{{product1.product.product_photos.photo1.url}}">
+					                    </div>
+									</a>
+				                </td>
+				                <td class="align-left">
+				                    <div class="product-title"> 
+				                        <a href="{% url 'pro_details' product1.product.id %}">{{product1.product.name}}</a>
+				                    </div>
+				                </td>
+				                <td>
+				                    <ul>
+				                        <li>
+				                          	<div class="base-price price-box"> 
+				                            	<span class="price">{{product1.product.price}} Afs</span>
+				                          	</div>
+				                        </li>
+				                    </ul>
+				                </td>
+								   <td>
+				                    <div class="input-box">
+										<input type="number" name="quantity" min="0" max="10" value="{{product1.quantity}}" class="pl-4 py-2 border qty_input" style="font-size:22px;">
+				                    </div>
+									</td>
+									<td>
+										<div class="total-price price-box">
+											<span class="price">{{ product1.quantity | mul:product1.product.price }} Afs</span>
+										</div>
+									</td>
+				                <td>
+				                   	<button class="btn small btn-color remove-item" data-id="{{product1.id}}">
+					                    <i title="Remove Item From Cart"  class="fa fa-trash cart-remove-item"></i>
+					                </button>
+				                </td>
+				            </tr>
+						{% endfor %}
+				        </tbody>
+				    </table>
+				</div>
+			</div>
+			<div class="mb-30">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="mt-30 text-center-r"> 
+						    <a href="{% url 'order_now' %}" class="btn btn-color">
+						        <i class="fa fa-angle-left"></i><span>Continue Shopping</span>
+						    </a> 
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="mt-30 right-side float-none-sm text-center-r"> 
+						    <button class="btn btn-color" id="updatebtn">Update Cart</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="row mt-5">
+				<div class="col-md-6">
+				<div class="cart-total-table commun-table">
+					        <div class="table-responsive" id="cart_total">
+					            <table class="table border">
+					                <thead>
+					                    <tr>
+					                      	<th colspan="2" class="text-center-r">Cart Total</th>
+					                    </tr>
+					                </thead>
+					                <tbody>
+					                    <tr>
+					                      	<td>Item(s) Subtotal</td>
+					                      	<td>
+					                        	<div class="price-box">
+					                          		<span class="price">{{sub_total}} Afs</span>
+					                        	</div>
+					                      	</td>
+					                    </tr>
+					                    <tr>
+					                      	<td>Shipping</td>
+					                      	<td>
+					                        	<div class="price-box">
+					                          		<span class="price">0.00 Afs</span>
+					                        	</div>
+					                      	</td>
+					                    </tr>
+					                    <tr>
+					                      	<td><b>Amount Payable</b></td>
+					                      	<td>
+					                        	<div class="price-box">
+					                          		<span class="price"><b>{{sub_total}} Afs</b></span>
+					                        	</div>
+					                      	</td>
+					                    </tr>
+					                </tbody>
+					            </table>
+					        </div>
+					    </div>
+			</div>
+				<div class="col-md-6 ">
+					<div class="mtb-30">
+					<div class="row">
+					<div class="col-sm-6 col-md-12 mb-sm-20">
+					    <div class="estimate">
+					        <div class="heading-part mb-20">
+					            <h3 class="sub-heading text-center-r">Delivery Area</h3>
+					        </div>
+					        <form class="full" action="{% url 'address' %}" method="POST" novalidate>
+								{% csrf_token %}
+					             <div class="row">
+					                <div class="col-md-12">
+					                    <div class="input-box mb-20">
+					                      	{% for field in area_form %}
+					                        {{field}}
+											{% if field.errors %}
+												{% for error in field.errors %}
+													<span class="text-danger">{{error}}</span>
+												{% endfor %}
+											{% endif %}
+											{% endfor %}
+					                    </div>
+					                </div>
+									 <div class="mt-30 col-md-12" >
+										<div class="row">
+											<div class="col-12">
+												<div class="right-side float-none-xs text-center-r float-none-sm">
+													<button type="submit" class="btn btn-color">Proceed to Address
+														<span><i class="fa fa-angle-right"></i></span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+					            </div>
+					        </form>
+					    </div>
+					</div>
+
+				</div>
+			</div>
+			</div>
+			</div>
+
+
+
+		</div>
+	</section>
+	<!-- shopping cart end -->
+	<!-- footer  -->
+{% endblock %}
+
+{% block script_block %}
+<script>
+
+
+	$(document).ready(function(){
+
+
+		$('#updatebtn').click(function(){
+			output = ""
+			var quantities_list = []
+
+			quantities = $('.qty_input')
+			 quantities.each(function(){
+                var value = $(this).val();
+                quantities_list.push(value)
+            });
+
+            my_data = {qty: quantities_list}
+
+           $.ajax({
+           		url : {% url 'cart' %},
+           		method: "POST",
+           		data : my_data,
+           		success: function(data){
+           			console.log(data.products[0].product__price);
+           			for(i=0;i<data.products.length;i++){
+           				output += "<tr><td class='align-left'> <a href='{% url 'pro_details'  "+ data.products[i].product__id +
+						" %}'><div class='product-image'><img alt='Eshoper' src='"+ data.products[i].image_url+
+						"'></div></a></td><td class='align-left'><div class='product-title'><a href='{% url 'pro_details' "+ data.products[i].product__id+
+						" %}>"+ data.products[i].product__name+"</a></div></td><td><ul><li><div class='base-price price-box'><span class='price'>"+
+						data.products[i].product__price +
+						" Afs </span></div></li></ul></td><td><div class='input-box'><input type='number' name='quantity' min='0' max='10' value="+
+						data.products[i].quantity+" class='pl-4 py-2 border qty_input' style='font-size:22px;'></div></td><td><div class='total-price price-box'> <span class='price'>"+
+						(data.products[i].quantity * data.products[i].product__price)+" Afs</span></div></td><td><button class='btn small btn-color remove-item' data-id='"+ data.products[i]['id']  +"'><i title='Remove Item From Cart' class='fa fa-trash cart-remove-item'></li></a></td></tr>";
+           			}
+           			$('#product_cart_body').html(output);
+
+           			cart_output = '<table class="table border"><thead><tr><th colspan="2" class="text-center-r">Cart Total</th></tr></thead><tbody><tr><td>Item(s) Subtotal</td><td><div class="price-box"><span class="price">'+ data.subtotal +
+					' Afs</span></div></td></tr><tr><td>Shipping</td><td><div class="price-box"><span class="price">0.00 Afs</span></div></td></tr><tr><td><b>Amount Payable</b></td><td><div class="price-box"><span class="price"><b>'+ data.subtotal +
+					' Afs</b></span></div></td></tr></tbody></table>';
+					$('#cart_total').html(cart_output);
+           		}
+           });
+
+		})
+
+
+
+		$(document).on('click','.remove-item',function(){
+			id = $(this).attr('data-id');
+			output = ""
+            my_data = {id: id}
+
+           $.ajax({
+           		url : {% url 'cart' %},
+           		method: "POST",
+           		data : my_data,
+           		success: function(data){
+
+           			for(i=0;i<data.products.length;i++){
+           				output += "<tr><td class='align-left'> <a href='{% url 'pro_details'  "+ data.products[i].product__id +
+						" %}'><div class='product-image'><img alt='Eshoper' src='"+ data.products[i].image_url+
+						"'></div></a></td><td class='align-left'><div class='product-title'><a href='{% url 'pro_details' "+ data.products[i].product__id+
+						" %}>"+ data.products[i].product__name+"</a></div></td><td><ul><li><div class='base-price price-box'><span class='price'>"+
+						data.products[i].product__price +
+						" Afs </span></div></li></ul></td><td><div class='input-box'><input type='number' name='quantity' min='0' max='10' value="+
+						data.products[i].quantity+" class='pl-4 py-2 border qty_input' style='font-size:22px;'></div></td><td><div class='total-price price-box'> <span class='price'>"+
+						(data.products[i].quantity * data.products[i].product__price)+" Afs</span></div></td><td><button class='btn small btn-color remove-item' data-id='"+ data.products[i]['id'] +"'><i title='Remove Item From Cart' class='fa fa-trash cart-remove-item'></li></button></td></tr>";
+           			}
+           			$('#product_cart_body').html(output);
+
+           			cart_output = '<table class="table border"><thead><tr><th colspan="2" class="text-center-r">Cart Total</th></tr></thead><tbody><tr><td>Item(s) Subtotal</td><td><div class="price-box"><span class="price">'+ data.subtotal +
+					' Afs</span></div></td></tr><tr><td>Shipping</td><td><div class="price-box"><span class="price">0.00 Afs</span></div></td></tr><tr><td><b>Amount Payable</b></td><td><div class="price-box"><span class="price"><b>'+ data.subtotal +
+					' Afs</b></span></div></td></tr></tbody></table>';
+					$('#cart_total').html(cart_output);
+
+           		}
+           });
+		})
+
+
+	})
+
+
+	var message  = setTimeout(removeMessage,8000);
+	  function removeMessage(){
+		document.getElementById('msg').style.display = 'none'
+	  }
+</script>
+{% endblock %}
+

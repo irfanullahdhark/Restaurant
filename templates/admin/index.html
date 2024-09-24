@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style_block %}
+.card{
+    background-color:#F0E6E6;
+    color:#000;
+}
+{% endblock %}
+
+{% block body_block %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="background-color:#D2C098;">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Dashboard</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid pb-5">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                {% if no_of_undelivered_orders > 0 %}
+                <h3> <span class="badge badge-danger">{{no_of_undelivered_orders}}</span></h3>
+                {% else %}
+                 <h3>{{no_of_undelivered_orders}}</h3>
+                {% endif %}
+                <p>Not Seen Orders</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-bag"></i>
+              </div>
+              <a href="{% url 'undelivered_orders' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3>{{no_of_all_customers}}</h3>
+
+                <p>total Users</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-person-add"></i>
+              </div>
+              <a href="{% url 'users' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <h3>{{no_of_today_deliveries}}</h3>
+
+                <p>Today Deliveries</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-stats-bars"></i>
+              </div>
+              <!-- because we can sort here deliveries by 24hrs  -->
+              <a href="{% url 'today_deliveries' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>30<sup>%</sup></h3>
+
+                <p>Today Report</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+              <a href="{% url 'reports' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+        </div>
+        <!-- /.row -->
+        <!-- latest members -->
+        <div class="col-md-12" >
+            <!-- USERS LIST -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Latest Members</h3>
+
+                <div class="card-tools">
+                  <span class="badge badge-danger">{{no_latest_customers}} New Members</span>
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body p-0">
+                <ul class="users-list clearfix">
+                  {% for customer in latest_customers %}
+                  <li>
+                    <a class="users-list-name" href="{% url 'user_details' customer.id %}">
+                      <img src="{{customer.photo.url}}" alt="User Image" style="width:150px;height:150px;">
+                    </a>
+                    <a class="users-list-name" href="{% url 'user_details' customer.id %}">{{customer.first_name}}</a>
+                    <span class="users-list-date">Registered at <br>{{customer.created_at}}</span>
+                  </li>
+                  {% endfor %}
+                </ul>
+                <!-- /.users-list -->
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer text-center">
+                <a href="{%  url 'users' %}">View All Users</a>
+              </div>
+              <!-- /.card-footer -->
+            </div>
+            <!--/.card -->
+        </div>
+            <!-- end latest memeber -->
+
+            <!-- TABLE:  LATEST ORDERS -->
+        <div class="col-md-12" >
+          <div class="card" >
+             <div class="card-header">
+              <h3 class="card-title">Latest Orders</h3>
+
+              <div class="card-tools">
+                <span class="badge badge-danger">{{no_new_orders}} New Orders</span>
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table m-0">
+                  <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer Name</th>
+                    <th>Products Ordered</th>
+                    <th>Total Money</th>
+                    <th>Status</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for order in orders %}
+                  <tr>
+                    <td><a href="{% url 'order_details' order.id %}">{{order.id}}</a></td>
+                    <td>{{order.custID.first_name}}</td>
+                    <td>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">
+                        {% for product in order.ordered_products.all %}
+                            {{product.name}}<b> , </b>
+                        {% endfor %}
+                      </div>
+                    </td>
+                    <td>{{order.subtotal}} Afs</td>
+                    {% if order.status == 'undelivered' %}
+                      <td><span class="badge badge-danger">{{order.status}}</span></td>
+                    {% else %}
+                      <td><span class="badge badge-success">{{order.status}}</span></td>
+                    {% endif %}
+                  </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer text-center">
+              <a href="{% url 'orders' %}">View All Orders</a>
+            </div>
+          </div>
+        </div>
+  
+        <!-- end of Latest ORDERS  -->
+        <div class="col-md-12" >
+          <!-- PRODUCT LIST -->
+          <div class="card" >
+              <div class="card-header">
+                <h3 class="card-title">Recently Added Products</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body p-0">
+                <ul class="products-list product-list-in-card pl-2 pr-2">
+                  {% for product in recent_products %}
+                  <li class="item" style="background-color:#F0E6E6;color:#000;">
+                    <div class="product-img">
+                      <img src="{{product.photo1.url}}" alt="Product Image" class="img-size-50">
+                    </div>
+                    <div class="product-info">
+                      <a href="{% url 'product_details' product.pro_id.id %}" class="product-title">{{product.pro_id.name}}</a>
+                        <span class="badge badge-warning float-right">{{product.pro_id.price}}AFG</span>
+                      <span class="product-description">{{product.pro_id.info}}</span>
+                    </div>
+                  </li>
+                  {% endfor %}
+                  <!-- /.item -->
+                </ul>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer text-center">
+                <a href="{% url 'products_list' %}" class="uppercase">View All Products</a>
+              </div>
+              <!-- /.card-footer -->
+            </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Footer Content  -->
+  <footer class="main-footer" style="background-color:#34495E;color:#ECF0F1;">
+    <strong>Offecial  &copy; 2023 <a href="https://adminlte.io"> Afghan Shahee Hotel & Restaurant</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.1.0
+    </div>
+  </footer>
+  <!-- Main Footer. -->
+
+{% endblock %}

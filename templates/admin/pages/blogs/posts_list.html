@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block style_block %}
+
+{% endblock %}
+
+
+{% block body_block %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Blogs</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">All Post</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- /.row -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title"><a href="{% url 'post_list'  %}">All Post</a> </h3>
+                <div class="card-tools">
+                    <form method="POST" action="{% url 'post_list' %}">
+                        {% csrf_token %}
+                      <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="text" name="table_search" class="form-control" placeholder="Search Post">
+                        <div class="input-group-append">
+                              <button type="submit" class="btn btn-default" name="search_value">
+                                <i class="fas fa-search "></i>
+                              </button>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            {% if 'search_value' in request.method.search  %}
+                             <p class="alert alert-info"> search result. {{total_post}} posts</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8 offset-2">
+                            {% for item in posts %}
+                           <figure class="figure">
+                            <a href="{% url 'post_details' item.id %}">
+                                <img src="{{item.post_img.url}}" alt="" style="width: 100%; height:400px;"  class="rounded p-2">
+                            </a>
+                            <div class="figure-caption">
+                                <h1 class="" style="color:black;"><a href="{% url 'post_details' item.id %}">{{item.post_sub}}</a></h1>
+                               <p class="limit-string" data-max-length="400">{{item.post_desc}}</p>
+                                <a href="{% url 'post_details' item.id %}" class="btn btn-outline-info">Read More</a>
+                                <form action="{% url 'delete_post' item.id %}" method="POST" class="d-inline ml-sm-1 ml-md-3 ml-lg-5 ">
+                                    {% csrf_token %}
+                                    <button type="submit" name="del" class="btn btn-outline-danger">delete post</button>
+                                </form>
+                            </div>
+                           </figure>
+                            {% endfor %}
+                             <nav aria-label="...">
+                                  <ul class="pagination">
+                                    {% if posts.has_previous %}
+                                    <li class="page-item">
+                                            <a href="?page={{posts.previous_page_number}}" class="page-link">Previous</a>
+                                    </li>
+                                      {% else %}
+                                        <li class="page-item disabled">
+                                            <a href="" class="page-link">Previous</a>
+                                      </li>
+                                    {% endif %}
+                                    <li class="page-item active"><a href="" class="page-link">{{posts.number}}</a></li>
+
+                                      {% if posts.has_next %}
+                                    <li class="page-item">
+                                        <a href="?page={{posts.next_page_number}}" class="page-link" >Next</a>
+                                    </li>
+                                       {% else %}
+                                        <li class="page-item disabled">
+                                             <a href="" class="page-link">Next</a>
+                                        </li>
+                                        {% endif %}
+                                  </ul>
+                             </nav>
+                        </div>
+                       
+                    </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- /.content-wrapper -->
+  </div>
+  
+
+{% endblock %}
+
+
+{% block scripts_block %}
+<script>
+
+    var limitStringElements = document.querySelectorAll('.limit-string');
+
+    limitStringElements.forEach(function(element) {
+        var maxLength = parseInt(element.getAttribute('data-max-length'), 10);
+        var text = element.textContent;
+
+        if (text.length > maxLength) {
+            element.textContent = text.slice(0, maxLength) + '...';
+        }
+    });
+
+</script>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block body_block %}
+
+	<section class="page-banner" style="background: #121619 url({% static 'restaurant/images/blog-9.jpg' %}) no-repeat center / cover;">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="page-title">
+						<h1 class="page-headding">order online</h1>
+						<ul>
+							<li><a href="index.html" class="page-name">Home</a></li>
+							<li>Order Online</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="pizza-crust pt-100 pb-50">
+		<div class="container">
+			<div class="crust-banner" style="background: url({% static 'restaurant/images/crust.jpg' %}) no-repeat center / cover;">
+				<h2 class="crust-title"><span>Order Now From Afghan Shahee Restaurant</span></h2>
+				<p class="crust-sub" style="color:#D2C098;">
+					Experience Afghan culinary excellence. Order now from Afghan Shahee Restaurant and indulge in authentic flavors that will tantalize your taste buds. Don't miss out, place your order today!
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="online-booking filter-part">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-6 offset-xl-6 col-lg-6 offset-lg-6 col-md-6 offset-md-6">
+					<ul class="filter-line">
+							  <form method="POST" >
+								  {% csrf_token %}
+								<div class="input-group input-group-lg" style="height:65px;">
+									<div class="input-group-prepend">
+										<div class="input-group-text px-4" style="background-color:#DEB88C;border-top-left-radius:20px;  border-bottom-left-radius:20px;">
+											<span><i class="fas fa-search"></i></span>
+										</div>
+									</div>
+									<input type="text" class="form-control" name="search_value" style="background-color:#DEB88C; border-width:0px; height:65px;" placeholder="What do you want to eat?">
+									<div class="input-group-append">
+										<button type="submit" name="search" class="input-group-text d-inline-block text-center pt-3" style="background-color:#D68727; color:white; cursor:pointer; width:200px; border-top-right-radius:20px;  border-bottom-right-radius:20px;">SEARCH</button>
+									</div>
+								</div>
+							  </form>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<label class="active-filter"><a href="{% url 'order_now' %}">All Products</a></label>
+				</div>
+				{% if 'search' in  request.POST %}
+				{% for product in searched_products %}
+				<div class="col-xl-3 col-lg-3 col-md-3">
+					<div class="filter-box">
+						<div class="img-filter"><a href="{% url 'pro_details' product.pro_id.id %}"><img src="{{product.photo1.url}}" width="200"></a></div>
+						<a href="{% url 'pro_details' product.pro_id.id %}" class="filter-name">{{ product.pro_id.name }}</a>
+						<p class="filter-sub limit-string" data-max-length="100">{{product.pro_id.info}}</p>
+						<span class="filter-price">{{product.pro_id.price}} Afs</span>
+						<a href="{% url 'pro_details' product.pro_id.id %}" class="order-filter">order now</a>
+					</div>
+				</div>
+				{% endfor %}
+
+				{% else %}
+				{% for product in products %}
+				<div class="col-xl-3 col-lg-3 col-md-3">
+					<div class="filter-box">
+						<div class="img-filter"><a href="{% url 'pro_details' product.pro_id.id %}"><img src="{{product.photo1.url}}" width="200"></a></div>
+						<a href="{% url 'pro_details' product.pro_id.id %}" class="filter-name">{{ product.pro_id.name }}</a>
+						<p class="filter-sub limit-string" data-max-length="100">{{product.pro_id.info}}</p>
+						<span class="filter-price">{{product.pro_id.price}} Afs</span>
+						<a href="{% url 'pro_details' product.pro_id.id %}" class="order-filter">order now</a>
+					</div>
+				</div>
+				{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+	</section>
+
+	<div class="top-scrolling">
+		<a href="#header" class="scrollTo"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
+	</div>
+
+
+{% endblock %}
+
+{% block script_block %}
+<script>
+
+	 var limitStringElements = document.querySelectorAll('.limit-string');
+
+    limitStringElements.forEach(function(element) {
+        var maxLength = parseInt(element.getAttribute('data-max-length'), 10);
+        var text = element.textContent;
+
+        if (text.length > maxLength) {
+            element.textContent = text.slice(0, maxLength) + '...';
+        }
+    });
+
+</script>
+{% endblock %}

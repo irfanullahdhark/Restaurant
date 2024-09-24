@@ -1,0 +1,419 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block style_block %}
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+  border-radius:10px;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: chocolate;
+  color: black;
+}
+
+/* Add an active class to highlight the current page */
+.topnav a.active {
+  background-color: chocolate;
+  color: white;
+}
+
+/* Hide the link that should open and close the topnav on small screens */
+.topnav .icon {
+  display: none;
+}
+
+
+/* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
+@media screen and (max-width: 600px) {
+  .topnav a:not(:first-child) {display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+/* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: relative;}
+  .topnav.responsive a.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+
+}
+
+#current tr td,#current tbody{
+ border: 1px solid black;
+}
+{% endblock %}
+
+
+{% block body_block %}
+	<!-- banner start -->
+	<section class="page-banner" style="background: #121619 url({% static 'restaurant/images/blog-8.jpg' %}) no-repeat center / cover;">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="page-title">
+						<h1 class="page-headding">Login</h1>
+						<ul>
+							<li><a href="index.html" class="page-name">Home</a></li>
+							<li>Login</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- banner end -->
+
+<div class="profile-content m-5">
+    <div class="container">
+    <div class="row">
+        <div class="col-xl-8 col-md-10 offset-xl-2 offset-md-1">
+           	<div class="topnav" id="myTopnav">
+                  <ul  id="tabs" class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="text-uppercase font-weight-bold tab-link current" data-tab="dashboard"><a href="#dashboard" role="tab" data-toggle="tab" class="active">Dashboard</a></li>
+                        <li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="#orders"><a href="#orders" role="tab" data-toggle="tab">Orders</a></li>
+                        <li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="addresses"><a href="#addresses" role="tab" data-toggle="tab"> Addresses</a></li>
+                        <li role="presentation" class="text-uppercase font-weight-bold tab-link" data-tab="accountDetails"><a href="#accountDetails" role="tab" data-toggle="tab"> Account Details</a></li>
+                        <li role="presentation" class="text-uppercase font-weight-bold tab-link" ><a href="{% url 'logout' %}"  > Logout</a></li>
+                  </ul>
+				  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+					<i class="fa fa-bars"></i>
+				  </a>
+			</div>
+
+
+            <div class="tab-content">
+				<div role="tabpanel" class="row pt-50 tab-pane fade in active show" id="dashboard">
+
+					<div class="col">
+                        <!-- Main content -->
+                        <section class="content mb-5">
+                          <div class="container-fluid">
+                            <!-- /.row -->
+                            <div class="row">
+                              <div class="col">
+                                <div class="card">
+                                  <div class="card-header">
+                                     <div class="row">
+                                        <div class="col-4">
+                                            <img {% if user.photo %} src="{{ user.photo.url }}" {% endif %} alt=""  class="rounded-circle w-100 h-100">
+                                        </div>
+                                        <div class="col-5 mt-4 offset-1">
+                                                <h1>{{ user.first_name }}</h1>
+                                                <h3><b>ID: </b><span class="text-muted">{{ user.id }}</span></h3>
+                                        </div>
+                                     </div>
+
+                                  </div>
+                                  <!-- /.card-header -->
+                                  <div class="card-body table-responsive p-0">
+                                    <table class="table table-hover">
+                                        <tr>
+                                          <th>Username</th>
+                                          <td>{{ user.username }}</td>
+                                        </tr>
+                                        <tr>
+                                          <th>Email</th>
+                                          <td>{{ user.email }}</td>
+                                        </tr>
+                                        <tr>
+                                          <th>Phone</th>
+                                          <td>+93{{ user.phone }}</td>
+                                        </tr>
+
+                                    </table>
+                                  </div>
+                                  <!-- /.card-body -->
+                                </div>
+                              </div>
+                            </div>
+                          </div><!-- /.container-fluid -->
+                        </section>
+                        <!-- /.content -->
+
+
+
+                        <!-- TABLE:  LATEST ORDERS -->
+                         <section class="content mb-5">
+                           <div class="container">
+                               <div class="row">
+                                   <div class="col">
+                                       <div class="shadow my-3 rounded py-3 px-3">
+                                           <div class="row ">
+                                               <div class="col"><h2>Last Order</h2></div>
+                                           </div>
+                                           {% if last_order %}
+                                          <ul style="color:black;"  class="row">
+                                            <div class="col-md-6">
+                                                <li class="my-3"><h3><b>Products:
+                                                    {% for product in last_order.ordered_products.all %}
+                                                        {{product.name}}<b> , </b>
+                                                    {% endfor %}
+                                                </b></h3></li>
+                                                <li class="my-3"><h3>Order Date: {{last_order.order_date}}</h3></li>
+                                                 {% if last_order.status == 'undelivered' %}
+                                                <li class="my-3"><h3>Status: <span class="badge bg-danger text-white">{{last_order.status}}</span></h3></li>
+                                                {% else %}
+                                                  <td><h3>Status: <span class="badge bg-success text-white">{{last_order.status}}</span></h3></td>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-6">
+                                                <li class="my-3"><h3><b>Shipping Cost</b> :  <span class="badge bg-success text-white">Free Delivery</span></h3></li>
+                                                <li class="my-3"><h3><b>Total Order Amount : </b> {{last_order.subtotal}} Afs</h3></li>
+                                            </div>
+                                          </ul>
+                                           {% endif %}
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                        </section>
+
+					</div>
+
+				</div>
+				<div role="tabpanel" class="row pt-70 tab-pane fade" id="orders">
+					<div class="col text-center pt-20">
+						 <!-- TABLE:  ORDERS -->
+                      <div class="card">
+                        <!-- /.card-header -->
+                        <div class="card-body p-0">
+                          <div class="table-responsive">
+                            <table class="table m-0">
+                              <thead>
+                              <tr>
+                                <th>Order ID</th>
+                                <th>Order Date</th>
+                                <th>Products Ordered</th>
+                                <th>Total Money</th>
+                                <th>Status</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              {% if orders %}
+                              {% for order in orders %}
+                              <tr>
+                                <td>{{order.id}}</a></td>
+                                <td>{{order.order_date}}</td>
+                                <td>
+                                  <div class="sparkbar" data-color="#00a65a" data-height="20">
+                                      {% for product in order.ordered_products.all %}
+                                       {{product.name}}<b> , </b>
+                                      {% endfor %}
+                                  </div>
+                                </td>
+                                <td>{{order.subtotal}} Afs</td>
+                                 {% if order.status == 'undelivered' %}
+                                  <td><span class="badge badge-danger">{{order.status}}</span></td>
+                                {% else %}
+                                  <td><span class="badge badge-success">{{order.status}}</span></td>
+                                {% endif %}
+                              </tr>
+                              {% endfor %}
+                              {% endif %}
+                              </tbody>
+                            </table>
+                          </div>
+                          <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.card-body -->
+                      </div>
+                      <!-- end of ORDERS  -->
+					</div>
+				</div>
+				<div role="tabpanel" class="row tab-pane fade" id="addresses">
+					<div class="text-center col">
+                            <div class="cart-total-table commun-table" id="cust_addresses">
+                                {% if addresses_form %}
+                                {% for forms in addresses_form %}
+
+                                {% if not forms.current_address.value %}
+                                <div class="table-responsive">
+                                    <table class="table border" >
+                                        <tbody>
+                                        {% for field in  forms %}
+                                        {% if field.name != 'id' %}
+                                            <tr >
+                                                  <div class="form-group row" style="border-width:0px;">
+                                                  <div class="col-6"><td>{{field.label}}</td></div>
+                                                 <div class="col-6">
+                                                 <td>
+                                                     {{field}}
+                                                 </td>
+                                                 </div>
+                                                  </div>
+                                            </tr>
+                                        {% else %}
+                                            {{field}}
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                     <button class="btn btn-warning mb-3 text-white address_update" data-id="{{form.id}}gg">update</button>
+                                </div>
+                                {% else %}
+                                 <div class="table-responsive" id="current">
+                                    <table class="table border" >
+                                        <tbody>
+                                        {% for field in  forms %}
+                                        {% if field.name != 'id' %}
+                                            <tr>
+                                                  <div class="form-group row" style="border-width:0px;">
+                                                  <div class="col-6"><td>{{field.label}}</td></div>
+                                                 <div class="col-6">
+                                                 <td>
+                                                     {{field}}
+                                                 </td>
+                                                 </div>
+                                                  </div>
+                                            </tr>
+                                        {% else %}
+                                            {{field}}
+                                        {% endif %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                     <button class="btn btn-warning mb-3 text-white address_update">update</button>
+                                </div>
+
+                                {% endif %}
+
+
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+					</div>
+				</div>
+				<div role="tabpanel" class="row pt-70 tab-pane fade" id="accountDetails">
+					<div class="container">
+                        <form method="POST" enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
+                            <div class="row">
+                                {% for field in account_detail %}
+                                <div class="col-xl-6 col-lg-6 col-md-6">
+                                    <div class="form-group">
+                                        {{ field }}
+                                        {% if field.errors %}
+                                        {% for error in field.errors %}
+                                            <span class="text-danger"> {{error}} </span>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="row">
+                                 <div class="col-xl-6 col-lg-6 col-md-6">
+                                    <div class="form-group">
+                                        <input type="submit" name="subbtn" class=" btn  btn-outline-success" value="update" required="" id="subbtn" >
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+{% endblock %}
+
+
+{% block script_block %}
+<script>
+    $(document).ready(function(){
+       $(document).on('click','.address_update',function(){
+           add_phone = $(this).prev().find('input[name=phone]').val()
+           add_area =  $(this).prev().find('input[name=area]').val()
+           add_street =  $(this).prev().find('input[name=street]').val()
+           add_shop_home =  $(this).prev().find('input[name=shop_home]').val()
+           add_address =  $(this).prev().find('textarea[name=address]').text()
+           address_id = $(this).prev().find('input[name=id]').val()
+           add_current_address = $(this).prev().find('input[name=current_address]').is(':checked');
+
+           mydata = {
+           id: address_id,
+           phone: add_phone,
+           area:add_area,
+           street:add_street,
+           shop_home: add_shop_home,
+           address: add_address,
+           current_address: add_current_address,
+           }
+
+
+           output = '';
+           $.ajax({
+                url: {% url 'update_address' %},
+                method : "POST",
+                data : mydata,
+                success : function(data){
+                      for(i=0;i<data.orders.length;i++){
+
+                        if(data.orders[i].current_address){
+                        output += '<div class="table-responsive" id="current">';
+                        }
+                        else{
+                        output += '<div class="table-responsive">';
+                        }
+                        output += '<table class="table border" ><tbody><tr ><div class="form-group row" style="border-width:0px;"><div class="col-6"><td>Phone No</td></div><div class="col-6"><td><input type="text" name="phone" value="'+data.orders[i].phone+
+                        '" style="border-width:0px;" maxlength="13" required id="id_phone"></td></div></div></tr><tr ><div class="form-group row" style="border-width:0px;"><div class="col-6"><td>Area</td></div><div class="col-6"><td><input type="text" name="area" value="'+ data.orders[i].area +
+                        '" readonly class="text-muted" style="border-width:0px;" required id="id_area"></td></div></div></tr><tr ><div class="form-group row" style="border-width:0px;"><div class="col-6"><td>Street</td></div><div class="col-6"><td><input type="text" name="street" value="'+ data.orders[i].street +
+                        '" style="border-width:0px;" maxlength="256" required id="id_street"></td></div></div></tr><tr ><div class="form-group row" style="border-width:0px;"><div class="col-6"><td>Shop/Home No</td></div><div class="col-6"><td><input type="text" name="shop_home" value="'+ data.orders[i].shop_home +
+                        '" style="border-width:0px;" maxlength="200" required id="id_shop_home"></td></div></div></tr><tr><div class="form-group row" style="border-width:0px;"><div class="col-6"><td>Address</td></div><div class="col-6"><td><textarea name="address" cols="40" rows="2" class="form-control" style="border-width:0px;" maxlength="320" required id="id_address">'+ data.orders[i].address +
+                        '</textarea></td></div></div></tr>';
+                        if(data.orders[i].current_address){
+                        output += '<tr><div class="form-group row" style="border-width:0px;"><div class="col-6"><td>Use As Current Address</td></div><div class="col-6"><td><input type="checkbox" name="current_address" id="id_current_address" checked></td></div></div></tr>';
+                        }else{
+                        output += '<tr><div class="form-group row" style="border-width:0px;"><div class="col-6"><td>Use As Current Address</td></div><div class="col-6"><td><input type="checkbox" name="current_address" id="id_current_address"></td></div></div></tr>';
+                        }
+                        output += '<input type="hidden" name="id" value="'+ data.orders[i].id +'" id="id_id"> </tbody></table><button class="btn btn-warning mb-3 text-white address_update">update</button></div>';
+
+                      }
+                      $('#cust_addresses').html(output);
+
+
+
+                }
+           })
+
+       })
+    })
+
+     function myFunction() {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "topnav") {
+        x.className += " responsive";
+      } else {
+        x.className = "topnav";
+      }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block body_block %}
+
+<!-- banner start -->
+	<section class="page-banner" style="background: #121619 url({% static 'restaurant/images/blog-1.jpg' %}) no-repeat center / cover;">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="page-title">
+						<h1 class="page-headding">Gallery</h1>
+						<ul>
+							<li><a href="{% url 'index' %}" class="page-name">Home</a></li>
+							<li>Gallery</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- banner end -->
+
+<!-- Main content -->
+    <section class="content my-5">
+      <div class="container-fluid">
+        <!-- /.row -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body table-responsive p-0">
+                {% for pic in photos %}
+                {% url 'image' pk.id as id %}
+                <img src="{{pic.image.url}}" class="pic" style="cursor:pointer;" data-id="{{ pic.id }}">
+                {% endfor %}
+                <h1>{{id}}</h1>
+              </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+    </section>
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}
+
+
+{% block script_block %}
+<script>
+
+	  $(document).ready(function(){
+        $('.pic').click(function(data){
+          var x = $(this).attr('data-id');
+          window.open(x)
+        })
+       })
+</script>
+{% endblock %}

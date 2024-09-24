@@ -1,0 +1,70 @@
+{% extends 'restaurant/base.html' %}
+{% load static %}
+
+{% block style_block %}
+#login{
+	color: lightblue;
+}
+#login:hover{
+	color: #fd9d3e;
+}
+
+{% endblock %}
+
+{% block body_block %}
+
+		<!-- banner start -->
+	<section class="page-banner" style="background: #121619 url({% static 'restaurant/images/registeration-banner-1.png' %}) no-repeat center / cover;">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="page-title">
+						<h1 class="page-headding">Registration</h1>
+						<ul>
+							<li><a href="index.html" class="page-name">Home</a></li>
+							<li>Register</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- banner end -->
+
+	<section class="online-booking reservation pt-100 shadow-lg " style="background-color: #FEFCFF">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-12 col-lg-12 col-md-12">
+					<div class="headding-part text-center">
+						<h2 class="headding-title text-uppercase font-weight-bold">Create Account</h2>
+						<h5 class="mt-2"><b>Already Have Account? <a href="{% url 'login' %}" id="login">Login Here</a></b></h5>
+					</div>
+				</div>
+			</div>
+			<form method="POST" enctype="multipart/form-data" novalidate>
+				{% csrf_token %}
+				<div class="row">
+					{% for field in form %}
+					<div class="col-md-6">
+						<div class="form-group">
+						  {{field}}
+							{% if field.errors %}
+							{% for error in field.errors %}
+								<span class="text-danger ml-3 ">{{error}}</span>
+							{% endfor %}
+							{% endif %}
+						</div>
+					</div>
+					{% endfor %}
+					<div class="col-xl-6 col-lg-6 col-md-6">
+						<div class="form-group">
+							<input type="submit" name="subbtn" class=" btn  btn-outline-success" value="Create Account" required="" id="subbtn" >
+						</div>
+					</div>
+					
+				</div>
+			</form>
+		</div>
+	</section>
+
+{% endblock %}

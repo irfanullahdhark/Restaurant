@@ -1,0 +1,56 @@
+	/*_______________________________________________________
+	// Menu Page  //----------------------------
+	________________________________________________________*/
+	
+	.page-headding {font-size: 42px;}
+	.page-name{padding-top: 0;}
+	.page-banner {padding-top: 115px; padding-bottom: 70px;}
+	.menu-detail {padding: 10px 5px;}
+	.menu-list.pt-100{padding-top: 65px;}
+	.menu-tabbing {padding-bottom: 30px;}
+	.iteam-name{padding-bottom: 0;}
+	.iteam-desc {padding-top: 4px; padding-bottom: 10px;}
+	.menu-detail ul li{padding: 0px 5px;}
+	.list-img-2 {width: 80px; height: 80px;}
+	.menu-detail-2 {width: calc(100% - 80px); padding-left: 10px;}
+	.menu-list-box-2{padding: 0; margin-bottom: 30px}
+	.menu-list-box-2 .iteam-desc{height: 30px;}
+
+	
+
+	/*_______________________________________________________
+	// Menu Page  //----------------------------
+	________________________________________________________*/
+
+	.page-headding {font-size: 30px;}
+	.page-banner {padding-top: 85px; padding-bottom: 45px;}
+	.menu-tabbing ul {background: transparent; border: 0;}
+	.menu-tabbing ul li a{padding: 8px 25px;}
+	.menu-list.pt-100 {padding-top: 40px;}
+	.menu-list.pt-100 {padding-bottom: 30px;}
+	.menu-list-box-2 {margin-bottom: 10px;}
+	.iteam-name {font-size: 16px;}
+	.iteam-srice {font-size: 16px;}
+	.iteam-desc{line-height: 16px;}
+	.menu-list-box-2 .iteam-desc{height: 22px;}
+
+
+
+		/*_______________________________________________________
+	// Menu Page  //----------------------------
+	________________________________________________________*/
+
+	.menu-tabbing ul li a {padding: 2px 10px;}
+	.menu-tabbing {padding-bottom: 20px;}
+	.list-img-2 {width: 60px; height: 60px;}
+	.menu-detail-2 {width: calc(100% - 60px);}
+	.iteam-name-list {padding-bottom: 0px; margin-bottom: 0px;}
+	.menu-list-box-2 {margin-bottom: 10px;}
+
+	.blog-detail {padding-bottom: 30px;}
+
+	/*_______________________________________________________
+	// About Page  //----------------------------
+	________________________________________________________*/
+
+
